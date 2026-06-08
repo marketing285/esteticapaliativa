@@ -1,0 +1,26 @@
+{
+  "presencial": {
+    "modo": "form",
+    "cidade": "Cascavel/PR",
+    "data": "30 e 31 de agosto · Domingo e Segunda",
+    "titulo": "Pré-inscrição: lista de espera",
+    "desc": "Deixe seus dados pelo WhatsApp e você será avisada(o) em primeira mão assim que as inscrições abrirem.",
+    "mensagemWhatsapp": "Olá! Vim pelo link dos stories e quero fazer minha pré-inscrição para o evento presencial em Cascavel/PR (30 e 31/08).",
+    "linkCompra": ""
+  },
+  "cursos": [
+    {
+      "nome": "HEAD SPA Vitallis",
+      "desc": "Ritual terapêutico do zero ao protocolo oncológico",
+      "link": "landing-head-spa-vitallis.html",
+      "icon": "fa-spa"
+    },
+    {
+      "nome": "Drenagem Oncológica",
+      "desc": "Drenagem linfática aplicada ao paciente oncológico · Para profissionais",
+      "link": "landing-drenagem-oncologica.html",
+      "icon": "fa-hand-holding-medical"
+    }
+  ],
+  "whatsapp": "5514996908256"
+}
