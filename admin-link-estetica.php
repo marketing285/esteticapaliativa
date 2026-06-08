@@ -1,4 +1,27 @@
-<!DOCTYPE html>
+<?php
+session_start();
+$adminToken = getenv('ADMIN_TOKEN') ?: 'sem-token-configurado';
+
+// Handle login POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pwd'])) {
+    if ($_POST['pwd'] === $adminToken) {
+        $_SESSION['admin'] = true;
+        header('Location: admin-link-estetica.php');
+        exit;
+    } else {
+        $loginError = true;
+    }
+}
+
+// Handle logout
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: admin-link-estetica.php');
+    exit;
+}
+
+$isLoggedIn = !empty($_SESSION['admin']);
+?><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -11,13 +34,11 @@
   .topbar{background:#0a0a0a;padding:16px 32px;display:flex;align-items:center;gap:16px;}
   .topbar img{height:36px;filter:brightness(0) invert(1);opacity:.9;}
   .topbar span{color:#e8b84b;font-size:13px;font-weight:600;letter-spacing:.5px;}
-  .topbar .status-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;margin-left:auto;}
-  .topbar .status-txt{font-size:12px;color:#4ade80;}
   .container{max-width:820px;margin:32px auto;padding:0 24px 80px;}
   .card{background:#fff;border-radius:12px;border:1px solid #e4e4e7;margin-bottom:20px;overflow:hidden;}
   .card-header{padding:18px 24px;background:#fafafa;border-bottom:1px solid #e4e4e7;display:flex;align-items:center;gap:10px;}
   .card-header h2{font-size:15px;font-weight:600;}
-  .card-header .badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;}
+  .badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;}
   .badge-form{background:#fef3c7;color:#b45309;}
   .badge-compra{background:#dcfce7;color:#15803d;}
   .card-body{padding:20px 24px;display:flex;flex-direction:column;gap:14px;}
@@ -26,58 +47,65 @@
   input:focus,textarea:focus,select:focus{outline:none;border-color:#c8922a;box-shadow:0 0 0 3px rgba(200,146,42,.1);}
   textarea{min-height:72px;resize:vertical;}
   .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .toggle-group{display:flex;gap:0;}
+  .toggle-group{display:flex;}
   .toggle-btn{flex:1;padding:10px;border:1px solid #d4d4d8;background:#fff;cursor:pointer;font-size:13px;font-weight:500;color:#71717a;transition:.15s;font-family:'Inter',sans-serif;}
   .toggle-btn:first-child{border-radius:8px 0 0 8px;}
   .toggle-btn:last-child{border-radius:0 8px 8px 0;border-left:none;}
   .toggle-btn.active{background:#c8922a;border-color:#c8922a;color:#fff;}
-  .curso-card{border:1px solid #e4e4e7;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;position:relative;}
-  .curso-card .remove-btn{position:absolute;top:10px;right:12px;background:none;border:none;color:#ef4444;cursor:pointer;font-size:15px;padding:2px 6px;}
+  .curso-card{border:1px solid #e4e4e7;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;position:relative;margin-bottom:10px;}
+  .remove-btn{position:absolute;top:10px;right:12px;background:none;border:none;color:#ef4444;cursor:pointer;font-size:15px;padding:2px 6px;}
   .add-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:2px dashed #d4d4d8;border-radius:8px;padding:10px 18px;color:#71717a;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;width:100%;justify-content:center;transition:.15s;}
   .add-btn:hover{border-color:#c8922a;color:#c8922a;}
-  .save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e4e4e7;padding:14px 24px;display:flex;align-items:center;gap:12px;z-index:100;}
-  .save-bar-inner{max-width:820px;margin:0 auto;width:100%;display:flex;align-items:center;gap:12px;}
-  .btn-save{background:#c8922a;color:#fff;border:none;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s;}
-  .btn-save:hover{opacity:.88;}
+  .save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e4e4e7;padding:14px 24px;z-index:100;}
+  .save-bar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .btn-save{background:#c8922a;color:#fff;border:none;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
   .btn-save:disabled{opacity:.5;cursor:not-allowed;}
-  .btn-preview{background:#18181b;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
+  .btn-preview{background:#18181b;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;}
   .toast{padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;display:none;}
-  .toast.ok{background:#dcfce7;color:#15803d;}
-  .toast.err{background:#fee2e2;color:#dc2626;}
+  .toast-ok{background:#dcfce7;color:#15803d;}
+  .toast-err{background:#fee2e2;color:#dc2626;}
   .hint{font-size:11.5px;color:#a1a1aa;margin-top:4px;}
-  .lock-screen{position:fixed;inset:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;z-index:999;}
-  .lock-box{background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:40px;width:340px;text-align:center;}
-  .lock-box img{height:40px;filter:brightness(0) invert(1);margin-bottom:24px;}
-  .lock-box h2{color:#fff;font-size:18px;margin-bottom:8px;}
-  .lock-box p{color:#888;font-size:13px;margin-bottom:24px;}
-  .lock-box input{background:#111;border:1px solid #333;color:#fff;margin-bottom:12px;}
-  .lock-box input:focus{border-color:#c8922a;}
-  .lock-box button{width:100%;background:#c8922a;color:#000;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-  .lock-err{color:#ef4444;font-size:12px;margin-top:8px;display:none;}
+  /* LOGIN */
+  .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0a0a;}
+  .login-box{background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:40px;width:340px;text-align:center;}
+  .login-box img{height:40px;filter:brightness(0) invert(1);margin-bottom:24px;}
+  .login-box h2{color:#fff;font-size:18px;margin-bottom:8px;}
+  .login-box p{color:#888;font-size:13px;margin-bottom:24px;}
+  .login-box input{background:#111;border:1px solid #333;color:#fff;margin-bottom:12px;}
+  .login-box input:focus{border-color:#c8922a;}
+  .login-box button{width:100%;background:#c8922a;color:#000;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .login-err{color:#ef4444;font-size:12px;margin-top:8px;}
+  .logout-link{margin-left:auto;font-size:12px;color:#888;text-decoration:none;cursor:pointer;}
+  .logout-link:hover{color:#e8b84b;}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;}
+  .status-txt{font-size:12px;color:#4ade80;}
 </style>
 </head>
 <body>
 
-<!-- LOCK SCREEN -->
-<div class="lock-screen" id="lock">
-  <div class="lock-box">
+<?php if (!$isLoggedIn): ?>
+<div class="login-wrap">
+  <div class="login-box">
     <img src="logo-grupo-venda.png" alt="Grupo Venda">
     <h2>Admin Panel</h2>
     <p>Estética Paliativa · Link da Bio</p>
-    <input type="password" id="lock-pwd" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')unlock()">
-    <button onclick="unlock()">Entrar</button>
-    <div class="lock-err" id="lock-err">Senha incorreta</div>
+    <form method="POST">
+      <input type="password" name="pwd" placeholder="Senha de acesso" autofocus>
+      <button type="submit">Entrar</button>
+    </form>
+    <?php if (!empty($loginError)): ?>
+      <div class="login-err">Senha incorreta</div>
+    <?php endif; ?>
   </div>
 </div>
+<?php else: ?>
 
-<div id="app" style="display:none;">
 <div class="topbar">
   <img src="logo-grupo-venda.png" alt="Grupo Venda">
   <span>Admin · Link Estética Paliativa</span>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
-    <div class="status-dot" id="status-dot"></div>
-    <span class="status-txt" id="status-txt">Conectado</span>
-  </div>
+  <span class="status-dot" id="status-dot" style="margin-left:auto;"></span>
+  <span class="status-txt" id="status-txt">Conectado</span>
+  <a href="?logout" class="logout-link">Sair</a>
 </div>
 
 <div class="container">
@@ -114,7 +142,7 @@
       <div><label>Título do botão</label><input type="text" id="p-titulo"></div>
       <div><label>Descrição</label><textarea id="p-desc"></textarea></div>
       <div id="campo-wa-msg">
-        <label>Mensagem WhatsApp (pré-preenchida)</label>
+        <label>Mensagem WhatsApp</label>
         <textarea id="p-wa-msg"></textarea>
       </div>
       <div id="campo-link-compra" style="display:none;">
@@ -131,59 +159,37 @@
       <button class="add-btn" onclick="addCurso()">+ Adicionar formação</button>
     </div>
   </div>
-
 </div>
 
 <div class="save-bar">
   <div class="save-bar-inner">
     <button class="btn-save" id="btn-salvar" onclick="salvar()">Salvar e publicar</button>
     <a class="btn-preview" href="link-estetica-paliativa.html" target="_blank">Ver página</a>
-    <span class="toast ok" id="toast-ok">Salvo com sucesso!</span>
-    <span class="toast err" id="toast-err">Erro ao salvar</span>
+    <span class="toast toast-ok" id="toast-ok">Salvo com sucesso!</span>
+    <span class="toast toast-err" id="toast-err">Erro ao salvar</span>
   </div>
-</div>
 </div>
 
 <script>
-const ADMIN_TOKEN = 'gv-estetica-2026';
 let modo = 'form';
 let cursosData = [];
 
-// ---- LOCK ----
-function unlock() {
-  const pwd = document.getElementById('lock-pwd').value;
-  if (pwd === ADMIN_TOKEN) {
-    document.getElementById('lock').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    loadConfig();
-  } else {
-    document.getElementById('lock-err').style.display = 'block';
-  }
-}
-
-// ---- LOAD CONFIG ----
 async function loadConfig() {
   try {
     const res = await fetch('/data/config.json?v=' + Date.now());
-    if (!res.ok) throw new Error('status ' + res.status);
     const cfg = await res.json();
     populateForm(cfg);
     setStatus(true);
-  } catch(e) {
-    console.error('Erro ao carregar config:', e);
-    setStatus(false, 'Erro ao carregar');
-  }
+  } catch(e) { setStatus(false, 'Erro ao carregar'); }
 }
 
 function setStatus(ok, msg) {
-  const dot = document.getElementById('status-dot');
-  const txt = document.getElementById('status-txt');
-  dot.style.background = ok ? '#22c55e' : '#ef4444';
-  txt.style.color = ok ? '#4ade80' : '#f87171';
-  txt.textContent = msg || (ok ? 'Conectado' : 'Erro');
+  document.getElementById('status-dot').style.background = ok ? '#22c55e' : '#ef4444';
+  const t = document.getElementById('status-txt');
+  t.style.color = ok ? '#4ade80' : '#f87171';
+  t.textContent = msg || (ok ? 'Conectado' : 'Erro');
 }
 
-// ---- POPULATE ----
 function populateForm(cfg) {
   document.getElementById('wa').value = cfg.whatsapp || '';
   const p = cfg.presencial || {};
@@ -198,24 +204,23 @@ function populateForm(cfg) {
   renderCursos();
 }
 
-// ---- MODO ----
 function setModo(m) {
   modo = m;
   document.getElementById('btn-form').classList.toggle('active', m === 'form');
   document.getElementById('btn-compra').classList.toggle('active', m === 'compra');
   document.getElementById('campo-wa-msg').style.display = m === 'form' ? '' : 'none';
   document.getElementById('campo-link-compra').style.display = m === 'compra' ? '' : 'none';
-  const badge = document.getElementById('modo-badge');
-  badge.textContent = m === 'form' ? 'Pré-inscrição' : 'Vagas abertas';
-  badge.className = 'badge ' + (m === 'form' ? 'badge-form' : 'badge-compra');
+  const b = document.getElementById('modo-badge');
+  b.textContent = m === 'form' ? 'Pré-inscrição' : 'Vagas abertas';
+  b.className = 'badge ' + (m === 'form' ? 'badge-form' : 'badge-compra');
 }
 
-// ---- CURSOS ----
+function escHtml(s){ return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
 function renderCursos() {
-  const list = document.getElementById('cursos-list');
-  list.innerHTML = cursosData.map((c,i) => `
+  document.getElementById('cursos-list').innerHTML = cursosData.map((c,i) => `
     <div class="curso-card">
-      <button class="remove-btn" onclick="removeCurso(${i})" title="Remover">✕</button>
+      <button class="remove-btn" onclick="removeCurso(${i})">✕</button>
       <div class="row">
         <div><label>Nome</label><input id="c${i}-nome" value="${escHtml(c.nome)}"></div>
         <div><label>Ícone</label>
@@ -230,13 +235,13 @@ function renderCursos() {
         </div>
       </div>
       <div><label>Descrição</label><input id="c${i}-desc" value="${escHtml(c.desc)}"></div>
-      <div><label>Link (URL ou nome do arquivo)</label><input id="c${i}-link" value="${escHtml(c.link)}"></div>
+      <div><label>Link</label><input id="c${i}-link" value="${escHtml(c.link)}"></div>
     </div>`).join('');
 }
-function escHtml(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-function addCurso() { cursosData.push({nome:'',desc:'',link:'',icon:'fa-graduation-cap'}); renderCursos(); }
-function removeCurso(i) { cursosData.splice(i,1); renderCursos(); }
-function getCursos() {
+
+function addCurso(){ cursosData.push({nome:'',desc:'',link:'',icon:'fa-graduation-cap'}); renderCursos(); }
+function removeCurso(i){ cursosData.splice(i,1); renderCursos(); }
+function getCursos(){
   return cursosData.map((_,i) => ({
     nome: document.getElementById(`c${i}-nome`).value,
     desc: document.getElementById(`c${i}-desc`).value,
@@ -245,12 +250,9 @@ function getCursos() {
   }));
 }
 
-// ---- SALVAR ----
 async function salvar() {
   const btn = document.getElementById('btn-salvar');
-  btn.disabled = true;
-  btn.textContent = 'Salvando...';
-
+  btn.disabled = true; btn.textContent = 'Salvando...';
   const config = {
     presencial: {
       modo,
@@ -264,37 +266,30 @@ async function salvar() {
     cursos: getCursos(),
     whatsapp: document.getElementById('wa').value,
   };
-
   try {
     const res = await fetch('/api/save-config.php', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + ADMIN_TOKEN,
-      },
+      headers: {'Content-Type':'application/json','Authorization':'Bearer <?php echo htmlspecialchars(getenv("ADMIN_TOKEN"), ENT_QUOTES); ?>'},
       body: JSON.stringify(config),
     });
     const data = await res.json();
     if (data.ok) {
       showToast('ok');
-      setStatus(true, 'Salvo às ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}));
-    } else {
-      showToast('err');
-    }
-  } catch(e) {
-    showToast('err');
-    setStatus(false, 'Erro ao salvar');
-  }
-
-  btn.disabled = false;
-  btn.textContent = 'Salvar e publicar';
+      setStatus(true, 'Salvo ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}));
+    } else { showToast('err'); }
+  } catch(e) { showToast('err'); setStatus(false,'Erro'); }
+  btn.disabled=false; btn.textContent='Salvar e publicar';
 }
 
-function showToast(type) {
-  const t = document.getElementById('toast-' + type);
-  t.style.display = 'inline';
-  setTimeout(() => t.style.display = 'none', 3000);
+function showToast(type){
+  const t = document.getElementById('toast-'+type);
+  t.style.display='inline';
+  setTimeout(()=>t.style.display='none',3000);
 }
+
+loadConfig();
 </script>
+
+<?php endif; ?>
 </body>
 </html>

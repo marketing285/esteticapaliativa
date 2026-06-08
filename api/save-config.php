@@ -6,19 +6,23 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 
-// Token de autenticação do admin
-define('ADMIN_TOKEN', 'gv-estetica-2026');
+$adminToken = getenv('ADMIN_TOKEN');
+if (!$adminToken) {
+    http_response_code(500);
+    echo json_encode(['error' => 'ADMIN_TOKEN nao configurado no servidor']);
+    exit;
+}
 
 $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-if ($auth !== 'Bearer ' . ADMIN_TOKEN) {
+if ($auth !== 'Bearer ' . $adminToken) {
     http_response_code(403);
-    echo json_encode(['error' => 'Não autorizado']);
+    echo json_encode(['error' => 'Nao autorizado']);
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['error' => 'Método não permitido']);
+    echo json_encode(['error' => 'Metodo nao permitido']);
     exit;
 }
 
@@ -27,7 +31,7 @@ $config = json_decode($body, true);
 
 if ($config === null) {
     http_response_code(400);
-    echo json_encode(['error' => 'JSON inválido']);
+    echo json_encode(['error' => 'JSON invalido']);
     exit;
 }
 
