@@ -1,4 +1,5 @@
 Options -Indexes
+DirectoryIndex link-estetica-paliativa.html index.html index.php
 Header set Access-Control-Allow-Origin "*"
 
 # Cache curto para config.json
