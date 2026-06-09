@@ -529,7 +529,9 @@
     document.getElementById('f-email').value = '';
     document.getElementById('f-whatsapp').value = '';
     document.getElementById('f-erro').style.display = 'none';
-    showScreen('form');
+    // showScreen eh interna ao initPage — troca de tela diretamente
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-form').classList.add('active');
   }
 
   async function submeterForm() {
