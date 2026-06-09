@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook de Vendas · Estética Paliativa</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8f7f4; color: #1a1a1a; font-size: 15px; line-height: 1.6; }
+
+  /* HEADER */
+  .header { background: #0a0a0a; padding: 28px 40px; display: flex; align-items: center; gap: 20px; }
+  .header img { height: 90px; filter: brightness(0) invert(1); opacity: .9; }
+  .header-text h1 { color: #fff; font-size: 22px; font-weight: 700; }
+  .header-text p { color: #e8b84b; font-size: 13px; font-weight: 500; margin-top: 4px; }
+
+  /* TABS */
+  .tabs-bar { background: #fff; border-bottom: 2px solid #e8e8e8; padding: 0 40px; display: flex; gap: 0; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .tab-btn { padding: 18px 28px; border: none; background: none; font-size: 14px; font-weight: 600; color: #888; cursor: pointer; font-family: 'Inter', sans-serif; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: .15s; white-space: nowrap; }
+  .tab-btn:hover { color: #333; }
+  .tab-btn.active-headspa { color: #c8922a; border-bottom-color: #c8922a; }
+  .tab-btn.active-drenagem { color: #7c3aed; border-bottom-color: #7c3aed; }
+  .tab-btn.active-cascavel { color: #0ea5e9; border-bottom-color: #0ea5e9; }
+  .tab-panel { display: none; max-width: 900px; margin: 0 auto; padding: 40px 40px 80px; }
+  .tab-panel.active { display: block; }
+
+  /* PRODUTO BADGE */
+  .produto-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 28px; }
+  .badge-headspa { background: #fef3c7; color: #b45309; }
+  .badge-drenagem { background: #ede9fe; color: #6d28d9; }
+  .badge-cascavel { background: #e0f2fe; color: #0369a1; }
+
+  /* FICHA RAPIDA */
+  .ficha { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 36px; }
+  .ficha-item { background: #fff; border-radius: 12px; padding: 16px 18px; border: 1px solid #ebebeb; }
+  .ficha-item .fi-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #aaa; margin-bottom: 6px; }
+  .ficha-item .fi-valor { font-size: 18px; font-weight: 700; color: #111; }
+  .ficha-item .fi-sub { font-size: 12px; color: #888; margin-top: 2px; }
+
+  /* SECOES */
+  .secao { background: #fff; border-radius: 16px; border: 1px solid #ebebeb; margin-bottom: 24px; overflow: hidden; }
+  .secao-header { padding: 18px 24px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 10px; }
+  .secao-header .ico { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .ico-headspa { background: #fef3c7; }
+  .ico-drenagem { background: #ede9fe; }
+  .ico-cascavel { background: #e0f2fe; }
+  .secao-header h2 { font-size: 15px; font-weight: 700; }
+  .secao-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+  /* SCRIPTS */
+  .script-card { background: #f8f7f4; border-radius: 12px; padding: 20px; border-left: 4px solid #e8b84b; }
+  .script-card.roxo { border-left-color: #7c3aed; }
+  .script-card.azul { border-left-color: #0ea5e9; }
+  .script-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #aaa; margin-bottom: 10px; }
+  .script-text { font-size: 14px; line-height: 1.8; color: #222; white-space: pre-line; }
+  .script-hint { font-size: 12px; color: #888; margin-top: 10px; font-style: italic; }
+  .copy-btn { margin-top: 12px; padding: 6px 14px; background: #fff; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; font-weight: 600; color: #555; cursor: pointer; font-family: 'Inter', sans-serif; transition: .15s; }
+  .copy-btn:hover { background: #f0f0f0; }
+  .copy-btn.copied { background: #dcfce7; border-color: #86efac; color: #15803d; }
+
+  /* FAQ / OBJECOES */
+  .item-qa { padding: 18px 0; border-bottom: 1px solid #f0f0f0; }
+  .item-qa:last-child { border-bottom: none; padding-bottom: 0; }
+  .item-qa .pergunta { font-weight: 700; font-size: 14px; color: #111; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; }
+  .item-qa .resposta { font-size: 14px; color: #444; line-height: 1.75; padding-left: 26px; white-space: pre-line; }
+  .q-ico { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+  .q-faq { background: #fef3c7; color: #b45309; }
+  .q-obj { background: #fee2e2; color: #dc2626; }
+  .q-faq-roxo { background: #ede9fe; color: #7c3aed; }
+  .q-obj-roxo { background: #fee2e2; color: #dc2626; }
+  .q-faq-azul { background: #e0f2fe; color: #0369a1; }
+  .q-obj-azul { background: #fee2e2; color: #dc2626; }
+
+  /* CHECKLIST */
+  .check-list { display: flex; flex-direction: column; gap: 10px; }
+  .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: #f8f7f4; border-radius: 10px; font-size: 14px; }
+  .check-item .num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+  .num-ouro { background: #c8922a; color: #fff; }
+  .num-roxo { background: #7c3aed; color: #fff; }
+  .num-azul { background: #0ea5e9; color: #fff; }
+
+  /* ALERTA */
+  .alerta { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px 20px; font-size: 13.5px; color: #78350f; display: flex; gap: 10px; align-items: flex-start; }
+
+  /* PILL URGENCIA */
+  .urgencia { display: inline-flex; align-items: center; gap: 6px; background: #fee2e2; color: #dc2626; border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; margin-bottom: 16px; }
+
+  @media (max-width: 640px) {
+    .header { padding: 20px 20px; }
+    .header img { height: 60px; }
+    .tabs-bar { padding: 0 16px; overflow-x: auto; }
+    .tab-btn { padding: 16px 18px; font-size: 13px; }
+    .tab-panel { padding: 24px 16px 60px; }
+    .secao-body { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="https://estetica.vendai.com.br/logo-grupo-venda.png" alt="Grupo Venda">
+  <div class="header-text">
+    <h1>Playbook de Vendas</h1>
+    <p>Estética Paliativa · Secretaria e Atendimento</p>
+  </div>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab-btn active-headspa" onclick="showTab('headspa', this, 'active-headspa')">HEAD SPA Vitallis</button>
+  <button class="tab-btn" onclick="showTab('drenagem', this, 'active-drenagem')">Drenagem Oncológica</button>
+  <button class="tab-btn" onclick="showTab('cascavel', this, 'active-cascavel')">Evento Cascavel</button>
+</div>
+
+
+<!-- ============================================================
+     HEAD SPA VITALLIS
+     ============================================================ -->
+<div class="tab-panel active" id="tab-headspa">
+
+  <div class="produto-badge badge-headspa">HEAD SPA Vitallis · Formação Online</div>
+
+  <div class="ficha">
+    <div class="ficha-item">
+      <div class="fi-label">Valor</div>
+      <div class="fi-valor">R$ 497</div>
+      <div class="fi-sub">à vista</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Aulas</div>
+      <div class="fi-valor">15 aulas</div>
+      <div class="fi-sub">~1h57min de conteúdo</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Acesso</div>
+      <div class="fi-valor">Vitalício</div>
+      <div class="fi-sub">sem prazo para assistir</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Certificado</div>
+      <div class="fi-valor">Incluso</div>
+      <div class="fi-sub">ao concluir o curso</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Formato</div>
+      <div class="fi-valor">100% Online</div>
+      <div class="fi-sub">assiste quando quiser</div>
+    </div>
+  </div>
+
+  <!-- O QUE VENDER -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-headspa">🎯</div>
+      <h2>O que você está vendendo</h2>
+    </div>
+    <div class="secao-body">
+      <p>O HEAD SPA Vitallis ensina o protocolo completo de ritual terapêutico capilar, do zero até o atendimento ao paciente oncológico. A Vanessa Menezes, esteticista paliativista com 14 anos de experiência e mais de 1.000 alunas formadas, mostra desde a historia da pratica, aromaterapia e precificação até técnicas avançadas como Tigela Tibetana e o protocolo oncológico exclusivo.</p>
+      <div class="alerta">
+        <span>💡</span>
+        <span><strong>Argumento central:</strong> o módulo de protocolo oncológico é exclusivo e não existe em nenhum outro curso de Head Spa do mercado. Isso é um diferencial enorme para quem já atende ou quer atender pacientes em tratamento de câncer.</span>
+      </div>
+      <div>
+        <strong>Para quem é:</strong>
+        <ul style="margin-top:8px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#444;">
+          <li>Esteticistas que querem ampliar o cardápio de serviços</li>
+          <li>Cabeleireiros que querem oferecer ritual diferenciado</li>
+          <li>Terapeutas que trabalham com autocuidado e bem-estar</li>
+          <li>Profissionais que atendem ou querem atender pacientes oncológicos</li>
+          <li>Quem quer começar um novo serviço e cobrar mais por ele</li>
+        </ul>
+      </div>
+      <div>
+        <strong>O que está incluído:</strong>
+        <ul style="margin-top:8px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#444;">
+          <li>História e fundamentos do Head Spa</li>
+          <li>Aromaterapia aplicada ao protocolo</li>
+          <li>Como precificar o serviço</li>
+          <li>Rituais de acolhimento e experiência sensorial</li>
+          <li>Escalda-pés, massagem facial e epicraniana</li>
+          <li>Lavagem terapêutica e Tigela Tibetana</li>
+          <li>Protocolo oncológico exclusivo (Módulo 4)</li>
+          <li>Certificado de conclusão</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS DE WHATSAPP -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-headspa">💬</div>
+      <h2>Scripts de WhatsApp</h2>
+    </div>
+    <div class="secao-body">
+
+      <div class="script-card">
+        <div class="script-label">Primeiro contato (lead entrou pela bio do Instagram)</div>
+        <div class="script-text" id="hs-script1">Oi, [nome]! Tudo bem?
+
+Vi que você se inscreveu para saber mais sobre o HEAD SPA Vitallis. Que ótimo!
+
+É uma formação online completa que te ensina a montar um protocolo de ritual capilar do zero, incluindo um módulo exclusivo de atendimento ao paciente oncológico, que é o grande diferencial dela.
+
+São 15 aulas em vídeo com acesso vitalício, certificado incluso, tudo por R$ 497.
+
+Posso te contar mais algum detalhe?</div>
+        <button class="copy-btn" onclick="copiar(this, 'hs-script1')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card">
+        <div class="script-label">Quando a pessoa pede o link de pagamento</div>
+        <div class="script-text" id="hs-script2">Perfeito! Segue o link para garantir sua vaga:
+
+https://esteticapaliativa.com/spa-vitallis/
+
+Qualquer dúvida que aparecer no processo, pode me chamar aqui mesmo. Depois que concluir o pagamento o acesso chega por e-mail automaticamente.</div>
+        <button class="copy-btn" onclick="copiar(this, 'hs-script2')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card">
+        <div class="script-label">Seguimento (lead sumiu após 24h)</div>
+        <div class="script-text" id="hs-script3">Oi, [nome]! Passando para ver se surgiu alguma dúvida sobre o HEAD SPA Vitallis.
+
+O acesso é imediato após o pagamento, então você já começa a assistir hoje mesmo, no seu ritmo, de onde estiver.
+
+Posso te ajudar com alguma coisa?</div>
+        <button class="copy-btn" onclick="copiar(this, 'hs-script3')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card">
+        <div class="script-label">Seguimento final (último contato se não respondeu)</div>
+        <div class="script-text" id="hs-script4">Oi, [nome]! Último contato para não te incomodar.
+
+Se você tiver qualquer dúvida sobre o HEAD SPA Vitallis, pode me chamar quando quiser, a formação continua disponível.
+
+O link de acesso é esse aqui: https://esteticapaliativa.com/spa-vitallis/</div>
+        <button class="copy-btn" onclick="copiar(this, 'hs-script4')">Copiar mensagem</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-headspa">❓</div>
+      <h2>Perguntas frequentes com respostas prontas</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq">P</span> Precisa ter experiência prévia?</div>
+        <div class="resposta">Não precisa. O curso começa do zero, com a história e os fundamentos, e vai avançando progressivamente. Se você já é profissional de estética ou saúde, vai absorver o conteúdo com ainda mais facilidade.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq">P</span> Tem prazo para assistir?</div>
+        <div class="resposta">Não, o acesso é vitalício. Você assiste no seu próprio ritmo, quantas vezes quiser, para sempre.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq">P</span> O certificado é reconhecido?</div>
+        <div class="resposta">Sim, o certificado é emitido pela Vanessa Menezes, esteticista paliativista com 14 anos de experiência, membro do comitê científico da ANCP. Ele comprova sua qualificação profissional na área.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq">P</span> Como funciona o acesso depois do pagamento?</div>
+        <div class="resposta">Assim que o pagamento é confirmado, você recebe o acesso por e-mail. Isso acontece automaticamente, em minutos.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq">P</span> Tem parcelamento?</div>
+        <div class="resposta">Pode verificar as opções de parcelamento diretamente na página de pagamento. O valor à vista é R$ 497.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OBJECOES -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-headspa">🛡️</div>
+      <h2>Objeções e como responder</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj">!</span> "Tá caro"</div>
+        <div class="resposta">Entendo. Pensa assim: com um único atendimento de Head Spa você já recupera o investimento. Profissionais cobram entre R$ 150 e R$ 350 por sessão. Então na primeira cliente atendida o curso já se paga, e você fica com a formação, o certificado e o protocolo para sempre.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj">!</span> "Vou pensar"</div>
+        <div class="resposta">Claro, sem pressão! Só para você saber: o acesso é imediato e o conteúdo é vitalício, então você começa quando quiser. Se aparecer qualquer dúvida enquanto pensa, pode me chamar aqui mesmo.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj">!</span> "Não tenho tempo agora"</div>
+        <div class="resposta">Ótima notícia: o curso tem acesso vitalício. Você garante agora e assiste quando der, no seu ritmo. São 15 aulas, com total de menos de 2 horas de conteúdo. Dá para fazer nos finais de semana tranquilamente.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj">!</span> "Já vi outros cursos de Head Spa"</div>
+        <div class="resposta">A maioria dos cursos de Head Spa não tem o protocolo oncológico, que é o grande diferencial do Vitallis. É um módulo exclusivo que a Vanessa desenvolveu a partir da experiência clínica real com pacientes em tratamento de câncer. Não existe isso em outro curso do mercado.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj">!</span> "Como sei que é bom?"</div>
+        <div class="resposta">A Vanessa Menezes tem 14 anos de experiência em estética paliativa, já formou mais de 1.000 profissionais e é membro do comitê científico da ANCP, que é a Associação Nacional de Cuidados Paliativos. É uma das referências mais reconhecidas no Brasil nessa área.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHECKLIST FECHAMENTO -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-headspa">✅</div>
+      <h2>Roteiro de fechamento</h2>
+    </div>
+    <div class="secao-body">
+      <div class="check-list">
+        <div class="check-item"><span class="num num-ouro">1</span><span>Confirme o nome e pergunte em qual área atua hoje</span></div>
+        <div class="check-item"><span class="num num-ouro">2</span><span>Apresente o curso em 2 ou 3 linhas (o que é, quanto tempo, preço)</span></div>
+        <div class="check-item"><span class="num num-ouro">3</span><span>Mencione o diferencial do protocolo oncológico exclusivo</span></div>
+        <div class="check-item"><span class="num num-ouro">4</span><span>Pergunte se tem alguma dúvida antes de enviar o link</span></div>
+        <div class="check-item"><span class="num num-ouro">5</span><span>Envie o link de pagamento e o script de confirmação</span></div>
+        <div class="check-item"><span class="num num-ouro">6</span><span>Se não responder em 24h, use o script de seguimento</span></div>
+        <div class="check-item"><span class="num num-ouro">7</span><span>Após 48h sem resposta, envie o script de último contato</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     DRENAGEM ONCOLÓGICA
+     ============================================================ -->
+<div class="tab-panel" id="tab-drenagem">
+
+  <div class="produto-badge badge-drenagem">Drenagem Oncológica · Formação Online</div>
+
+  <div class="ficha">
+    <div class="ficha-item">
+      <div class="fi-label">Valor</div>
+      <div class="fi-valor">R$ 1.397</div>
+      <div class="fi-sub">à vista</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Aulas</div>
+      <div class="fi-valor">28 aulas</div>
+      <div class="fi-sub">~3h58min de conteúdo</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Acesso</div>
+      <div class="fi-valor">Vitalício</div>
+      <div class="fi-sub">sem prazo para assistir</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Certificado</div>
+      <div class="fi-valor">Incluso</div>
+      <div class="fi-sub">ao concluir o curso</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Público</div>
+      <div class="fi-valor">Profissionais</div>
+      <div class="fi-sub">saúde e estética</div>
+    </div>
+  </div>
+
+  <!-- O QUE VENDER -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-drenagem">🎯</div>
+      <h2>O que você está vendendo</h2>
+    </div>
+    <div class="secao-body">
+      <p>Esta é uma especialização para profissionais que já trabalham com drenagem linfática e querem aprender a aplicar a técnica com segurança em pacientes oncológicos. A Vanessa Menezes desmonta o mito de que a drenagem é contraindicada para quem tem câncer e ensina o protocolo correto, baseado em evidências, para 28 situações e contextos clínicos reais.</p>
+      <div class="alerta">
+        <span>⚠️</span>
+        <span><strong>Importante ao vender:</strong> este curso é para quem JÁ sabe drenar. Não é introdução à drenagem. Se a pessoa ainda não é profissional de drenagem, oriente a fazer primeiro uma formação básica de drenagem linfática.</span>
+      </div>
+      <div>
+        <strong>Para quem é:</strong>
+        <ul style="margin-top:8px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#444;">
+          <li>Esteticistas que já fazem drenagem linfática</li>
+          <li>Fisioterapeutas que atendem pacientes oncológicos</li>
+          <li>Enfermeiros e técnicos de enfermagem</li>
+          <li>Massoterapeuta e terapeutas corporais</li>
+          <li>Qualquer profissional de saúde que queira se especializar nessa área</li>
+        </ul>
+      </div>
+      <div class="alerta">
+        <span>💡</span>
+        <span><strong>Argumento central:</strong> o mercado de cuidados paliativos está crescendo no Brasil e ainda tem pouquíssimos especialistas. Quem se especializa agora ocupa uma posição de referência que poucos profissionais têm.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-drenagem">💬</div>
+      <h2>Scripts de WhatsApp</h2>
+    </div>
+    <div class="secao-body">
+
+      <div class="script-card roxo">
+        <div class="script-label">Primeiro contato (lead entrou pela bio do Instagram)</div>
+        <div class="script-text" id="dr-script1">Oi, [nome]! Tudo bem?
+
+Vi que você se inscreveu para saber mais sobre a formação em Drenagem Oncológica. Que ótimo!
+
+É uma especialização para profissionais que já trabalham com drenagem e querem atender pacientes em tratamento oncológico com segurança e técnica. São 28 aulas com a Vanessa Menezes, esteticista paliativista com 14 anos de experiência nessa área.
+
+Você já trabalha com drenagem linfática hoje?</div>
+        <button class="copy-btn" onclick="copiar(this, 'dr-script1')">Copiar mensagem</button>
+        <div class="script-hint">A pergunta final é importante: confirma que a pessoa é o público certo para o curso.</div>
+      </div>
+
+      <div class="script-card roxo">
+        <div class="script-label">Quando confirma que já trabalha com drenagem</div>
+        <div class="script-text" id="dr-script2">Perfeito, então esse curso foi feito para você!
+
+A formação tem 28 aulas em vídeo, acesso vitalício, certificado incluso, e o investimento é de R$ 1.397.
+
+Além do conteúdo técnico, a Vanessa explica por que a drenagem NÃO é contraindicada para pacientes com câncer (isso é um mito que ainda circula muito), e ensina o protocolo correto para cada situação clínica.
+
+Posso te enviar o link para garantir sua vaga?</div>
+        <button class="copy-btn" onclick="copiar(this, 'dr-script2')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card roxo">
+        <div class="script-label">Quando pede o link de pagamento</div>
+        <div class="script-text" id="dr-script3">Aqui está o link para garantir sua vaga:
+
+https://esteticapaliativa.com/drenagem-oncologica-2/
+
+O acesso chega por e-mail assim que o pagamento for confirmado, automaticamente. Qualquer dúvida no processo, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'dr-script3')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card roxo">
+        <div class="script-label">Seguimento (lead sumiu após 24h)</div>
+        <div class="script-text" id="dr-script4">Oi, [nome]! Passando para ver se surgiu alguma dúvida sobre a Drenagem Oncológica.
+
+Uma coisa que muita profissional me pergunta é sobre o valor: com essa especialização você consegue cobrar sessões mais valorizadas, porque poucos profissionais no Brasil têm essa formação específica.
+
+Posso te ajudar com alguma coisa?</div>
+        <button class="copy-btn" onclick="copiar(this, 'dr-script4')">Copiar mensagem</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-drenagem">❓</div>
+      <h2>Perguntas frequentes com respostas prontas</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-roxo">P</span> Precisa ter formação em drenagem para fazer o curso?</div>
+        <div class="resposta">Sim. Este é um curso de especialização, não de base. Você precisa já saber drenar para aproveitar o conteúdo. Se ainda não tem essa formação, a Vanessa pode indicar onde se formar primeiro.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-roxo">P</span> A drenagem não é proibida para pacientes com câncer?</div>
+        <div class="resposta">Esse é exatamente o mito que o curso desfaz. A drenagem não causa nem acelera metástases, isso já foi comprovado pela literatura científica. O que existe são protocolos específicos e contraindicações pontuais que precisam ser respeitadas, e é exatamente isso que a formação ensina.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-roxo">P</span> Tem prazo para assistir?</div>
+        <div class="resposta">Não. O acesso é vitalício. Você assiste no seu próprio ritmo, quantas vezes quiser, para sempre.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-roxo">P</span> O certificado é reconhecido?</div>
+        <div class="resposta">Sim. É emitido pela Vanessa Menezes, membro do comitê científico da ANCP, a Associação Nacional de Cuidados Paliativos. Comprova sua especialização profissional na área.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-roxo">P</span> Tem parcelamento?</div>
+        <div class="resposta">As opções de parcelamento estão disponíveis na página de pagamento. O valor à vista é R$ 1.397.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OBJECOES -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-drenagem">🛡️</div>
+      <h2>Objeções e como responder</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-roxo">!</span> "Tá caro"</div>
+        <div class="resposta">Entendo. Pensa assim: você está pagando por uma especialização que pouquíssimos profissionais no Brasil têm. Com essa formação você pode cobrar sessões mais valorizadas, atender um público que tem poucas opções de profissional qualificado, e construir uma reputação como referência na área. Em 3 a 5 sessões o investimento já se paga.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-roxo">!</span> "Vou pensar"</div>
+        <div class="resposta">Claro, sem pressão! O acesso é vitalício então não tem pressa. Só te lembro que o mercado de cuidados paliativos está crescendo muito e os primeiros que se especializam são os que constroem autoridade mais rápido. Qualquer dúvida, pode me chamar aqui.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-roxo">!</span> "Não atendo pacientes com câncer"</div>
+        <div class="resposta">Ainda. Mas a tendência é que esse perfil de paciente esteja cada vez mais presente no dia a dia das clínicas. Ter essa formação te prepara para atender com segurança quando isso acontecer, e te diferencia dos profissionais que ainda não sabem como agir nessa situação.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-roxo">!</span> "Como sei que o conteúdo é bom?"</div>
+        <div class="resposta">A Vanessa tem 14 anos de atuação exclusiva em estética paliativa, mais de 1.000 profissionais formados, dois livros publicados e faz parte do comitê científico da ANCP. O conteúdo é baseado em evidências científicas reais, não em opinião pessoal.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHECKLIST FECHAMENTO -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-drenagem">✅</div>
+      <h2>Roteiro de fechamento</h2>
+    </div>
+    <div class="secao-body">
+      <div class="check-list">
+        <div class="check-item"><span class="num num-roxo">1</span><span>Confirme que a pessoa já trabalha com drenagem linfática (requisito do curso)</span></div>
+        <div class="check-item"><span class="num num-roxo">2</span><span>Apresente o curso: especialização, 28 aulas, acesso vitalício, R$ 1.397</span></div>
+        <div class="check-item"><span class="num num-roxo">3</span><span>Mencione o desfazimento do mito: drenagem não é proibida para oncológico</span></div>
+        <div class="check-item"><span class="num num-roxo">4</span><span>Reforce a credencial da Vanessa (ANCP, 14 anos, 1.000+ alunas)</span></div>
+        <div class="check-item"><span class="num num-roxo">5</span><span>Pergunte se tem dúvida e envie o link de pagamento</span></div>
+        <div class="check-item"><span class="num num-roxo">6</span><span>Se não responder em 24h, use o script de seguimento com o argumento de valorização do serviço</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     EVENTO CASCAVEL
+     ============================================================ -->
+<div class="tab-panel" id="tab-cascavel">
+
+  <div class="produto-badge badge-cascavel">Evento Presencial · Cascavel/PR</div>
+  <div class="urgencia">🔴 Últimas vagas · Apenas 30 · Última turma de 2026</div>
+
+  <!-- OPCOES DE COMPRA -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;">
+    <div style="background:#fff;border-radius:14px;border:2px solid #e8b84b;padding:20px 22px;">
+      <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#b45309;margin-bottom:10px;">Somente Presencial</div>
+      <div style="font-size:26px;font-weight:800;color:#111;">R$ 2.500</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;">ou 12x de R$258,56 no cartão</div>
+      <ul style="margin-top:14px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#444;">
+        <li>2 dias de imersão presencial</li>
+        <li>Teoria e prática integradas</li>
+        <li>Apostila completa do curso</li>
+        <li>Certificado de conclusão</li>
+        <li>Grupo de suporte pós-curso</li>
+      </ul>
+    </div>
+    <div style="background:#0a0a0a;border-radius:14px;border:2px solid #e8b84b;padding:20px 22px;position:relative;">
+      <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#e8b84b;color:#000;font-size:11px;font-weight:800;padding:4px 14px;border-radius:20px;white-space:nowrap;">RECOMENDADO</div>
+      <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#e8b84b;margin-bottom:10px;">Combo Cascavel</div>
+      <div style="font-size:12px;color:#888;text-decoration:line-through;">De R$ 4.500</div>
+      <div style="font-size:26px;font-weight:800;color:#fff;">R$ 3.500</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;">ou 12x de R$361,98 · economiza R$1.000</div>
+      <ul style="margin-top:14px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#ccc;">
+        <li style="color:#e8b84b;font-weight:600;">Drenagem Oncológica online (acesso imediato)</li>
+        <li>2 dias de Estética Paliativa presencial</li>
+        <li>Apostila completa dos dois módulos</li>
+        <li>Dois certificados de conclusão</li>
+        <li>Grupo de suporte pós-curso</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ficha">
+    <div class="ficha-item">
+      <div class="fi-label">Data</div>
+      <div class="fi-valor">30 e 31/08</div>
+      <div class="fi-sub">Domingo e Segunda</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Local</div>
+      <div class="fi-valor">Cascavel/PR</div>
+      <div class="fi-sub">local a confirmar</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Vagas</div>
+      <div class="fi-valor">30 vagas</div>
+      <div class="fi-sub">turma fechada</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Formato</div>
+      <div class="fi-valor">2 dias</div>
+      <div class="fi-sub">teoria e prática no mesmo dia</div>
+    </div>
+  </div>
+
+  <!-- O QUE VENDER -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-cascavel">🎯</div>
+      <h2>O que você está vendendo</h2>
+    </div>
+    <div class="secao-body">
+      <p>Uma imersão presencial de dois dias em Estética Paliativa com a Vanessa Menezes. É a última turma do ano em Cascavel e tem apenas 30 vagas. Quem participar sai com conhecimento teórico e prático aplicado, além de acesso ao módulo online de Drenagem Oncológica como bônus.</p>
+
+      <div class="alerta">
+        <span>🔥</span>
+        <span><strong>Principal gatilho de venda:</strong> "última turma de 2026 em Cascavel" + "apenas 30 vagas". Use isso em toda abordagem. Não é pressão, é verdade, e quem perder não terá outra oportunidade em Cascavel este ano.</span>
+      </div>
+
+      <div>
+        <strong>Para quem é:</strong>
+        <ul style="margin-top:8px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#444;">
+          <li>Esteticistas, enfermeiros, fisioterapeutas</li>
+          <li>Médicos, biomédicos, massoterapeuta</li>
+          <li>Terapeutas ocupacionais e estudantes de saúde</li>
+          <li>Qualquer profissional que queira atuar com pacientes oncológicos</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Programação dos 2 dias:</strong>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+          <div style="background:#f0f9ff;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong style="color:#0369a1;">Dia 1 (30/08 - Domingo)</strong><br>
+            <span style="color:#444;">Introdução à oncologia, fisiopatologia do câncer, efeitos colaterais dos tratamentos, alterações cutâneas, radiodermite, síndrome mão-pé, neuropatia, avaliação da dor e comunicação terapêutica</span>
+          </div>
+          <div style="background:#f0f9ff;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong style="color:#0369a1;">Dia 2 (31/08 - Segunda)</strong><br>
+            <span style="color:#444;">Contraindicações estéticas, cosmetologia oncológica, terapia capilar, aromaterapia, protocolos integrativos e técnicas de massagem adaptadas ao paciente oncológico</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <strong>Opcoes de compra:</strong>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+          <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong>Somente Presencial: R$ 2.500</strong> (12x R$258,56)<br>
+            <span style="color:#555;">2 dias presenciais + apostila + certificado + grupo de suporte</span>
+          </div>
+          <div style="background:#0a0a0a;border:2px solid #e8b84b;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong style="color:#e8b84b;">Combo Cascavel: R$ 3.500</strong> <span style="color:#888;text-decoration:line-through;font-size:13px;">de R$4.500</span> <span style="color:#e8b84b;font-size:12px;font-weight:700;">(economiza R$1.000)</span><br>
+            <span style="color:#ccc;">12x R$361,98 · Presencial + Drenagem Oncológica online com acesso imediato + apostila dos dois módulos + dois certificados + grupo de suporte</span>
+          </div>
+        </div>
+      </div>
+      <div class="alerta">
+        <span>💡</span>
+        <span><strong>Sempre ofereça o combo primeiro.</strong> A economia de R$1.000 é o argumento mais forte. Quem compra o combo leva a Drenagem Oncológica online com acesso imediato, ou seja, já começa a estudar hoje enquanto o evento presencial não chega.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-cascavel">💬</div>
+      <h2>Scripts de WhatsApp</h2>
+    </div>
+    <div class="secao-body">
+
+      <div class="script-card azul">
+        <div class="script-label">Primeiro contato (lead entrou pela bio do Instagram)</div>
+        <div class="script-text" id="cs-script1">Oi, [nome]! Tudo bem?
+
+Vi que você se inscreveu para saber mais sobre o evento presencial em Cascavel.
+
+São dois dias de imersão em Estética Paliativa com a Vanessa Menezes, nos dias 30 e 31 de agosto, aqui em Cascavel/PR. Teoria e prática juntas, com turma bem reduzida: apenas 30 vagas, e é a última turma de 2026 na cidade.
+
+Quem participar também leva o acesso ao módulo online de Drenagem Oncológica como bônus.
+
+Você é profissional de saúde ou estética?</div>
+        <button class="copy-btn" onclick="copiar(this, 'cs-script1')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card azul">
+        <div class="script-label">Quando confirma o interesse e pede mais detalhes</div>
+        <div class="script-text" id="cs-script2">No primeiro dia a gente mergulha na oncologia, efeitos dos tratamentos, alterações de pele, dor e comunicação com o paciente. No segundo, trabalhamos os protocolos práticos: cosmetologia, terapia capilar, aromaterapia e técnicas de massagem adaptadas.
+
+Você sai do evento sabendo exatamente como atender um paciente em tratamento de câncer com segurança, técnica e humanidade.
+
+Temos duas opcoes:
+
+Somente presencial: R$ 2.500 (ou 12x de R$258,56)
+
+Combo Cascavel: R$ 3.500 (ou 12x de R$361,98) — inclui tudo do presencial mais a formação em Drenagem Oncológica 100% online, com acesso imediato assim que você pagar. Você já começa a estudar hoje e economiza R$1.000 em relação ao valor separado.
+
+Qual faz mais sentido para você?</div>
+        <button class="copy-btn" onclick="copiar(this, 'cs-script2')">Copiar mensagem</button>
+        <div class="script-hint">Apresente sempre as duas opcoes, mas mencione o combo primeiro. A economia de R$1.000 fecha muita venda.</div>
+      </div>
+
+      <div class="script-card azul">
+        <div class="script-label">Quando escolhe o combo</div>
+        <div class="script-text" id="cs-script2b">Otima escolha! O combo é o mais completo e você ja sai com dois cursos pelo preco de praticamente um.
+
+Aqui está o link para garantir o Combo Cascavel:
+
+https://esteticapaliativa.com/estetica-paliativa-cascavel/
+
+O acesso à Drenagem Oncológica online chega por e-mail assim que o pagamento for confirmado. Qualquer dúvida, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'cs-script2b')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card azul">
+        <div class="script-label">Quando escolhe somente o presencial</div>
+        <div class="script-text" id="cs-script2c">Perfeito! Aqui está o link para garantir sua vaga:
+
+https://esteticapaliativa.com/estetica-paliativa-cascavel/
+
+Lembrando que são apenas 30 vagas. Qualquer dúvida no processo, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'cs-script2c')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card azul">
+        <div class="script-label">Quando pede o link de pagamento</div>
+        <div class="script-text" id="cs-script3">Aqui está o link para garantir sua vaga:
+
+https://esteticapaliativa.com/estetica-paliativa-cascavel/
+
+Lembrando que são apenas 30 vagas e é a última turma de 2026 em Cascavel. Qualquer dúvida no processo, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'cs-script3')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card azul">
+        <div class="script-label">Seguimento (lead sumiu após 24h)</div>
+        <div class="script-text" id="cs-script4">Oi, [nome]! Passando para ver se surgiu alguma dúvida sobre o evento de Cascavel.
+
+As vagas estão preenchendo rápido porque é a última turma do ano aqui na cidade. Se você quiser garantir a sua, é só me falar que te envio o link.
+
+Posso te ajudar com alguma coisa?</div>
+        <button class="copy-btn" onclick="copiar(this, 'cs-script4')">Copiar mensagem</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-cascavel">❓</div>
+      <h2>Perguntas frequentes com respostas prontas</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-azul">P</span> Precisa ter experiência prévia?</div>
+        <div class="resposta">Não é obrigatório, mas é um curso voltado para profissionais de saúde e estética. Estudantes de saúde também podem participar. Se tiver dúvida se o perfil se encaixa, me conta sua área e a gente verifica juntos.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-azul">P</span> Qual o endereço exato do evento?</div>
+        <div class="resposta">O local exato está sendo confirmado e será divulgado com antecedência para todos os inscritos. A cidade é Cascavel/PR.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-azul">P</span> Tem certificado?</div>
+        <div class="resposta">Sim, todos os participantes recebem certificado de conclusão ao final do evento.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-azul">P</span> O que é o bônus de Drenagem Oncológica?</div>
+        <div class="resposta">Quem participar do evento recebe acesso ao módulo online de Drenagem Oncológica. É um conteúdo em vídeo com a Vanessa, complementar à formação presencial, que você acessa no seu próprio tempo e fica para sempre.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-azul">P</span> Qual a diferenca entre o presencial e o combo?</div>
+        <div class="resposta">O presencial (R$ 2.500) inclui os 2 dias de imersão em Cascavel. O Combo (R$ 3.500) inclui tudo isso mais a formação em Drenagem Oncológica 100% online, com acesso imediato após o pagamento. No combo você economiza R$1.000 em relação a comprar os dois separados.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-azul">P</span> Se comprar o combo, quando recebo a Drenagem Online?</div>
+        <div class="resposta">Imediatamente. O acesso ao curso de Drenagem Oncológica chega por e-mail assim que o pagamento é confirmado. Voce não precisa esperar o evento de agosto para começar.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-azul">P</span> Tem parcelamento?</div>
+        <div class="resposta">Sim. Presencial: 12x de R$258,56. Combo: 12x de R$361,98. As opcoes estão disponíveis na página de inscrição.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OBJECOES -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-cascavel">🛡️</div>
+      <h2>Objeções e como responder</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-azul">!</span> "Não posso viajar" / "Sou de outra cidade"</div>
+        <div class="resposta">Entendo! Muita gente vem de outras cidades exatamente para fazer essa formação com a Vanessa. É uma imersão de dois dias, então vale muito organizar uma viagem de fim de semana. E quem vier de fora costuma aproveitar para conhecer a cidade também. Posso te ajudar a pensar na logística?</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-azul">!</span> "Tá caro"</div>
+        <div class="resposta">Entendo. Pensa que além dos dois dias de formação presencial você leva junto o bônus do módulo online de Drenagem Oncológica, que sozinho tem um valor significativo. É um investimento que abre um novo nicho de atendimento para a sua carreira.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-azul">!</span> "Vou pensar"</div>
+        <div class="resposta">Claro! Só fica atenta porque são apenas 30 vagas e é a última turma do ano em Cascavel. Se fechar antes de você decidir não vai ter outra oportunidade igual em 2026. Qualquer dúvida que aparecer, pode me chamar aqui.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-azul">!</span> "Não trabalho com oncológico"</div>
+        <div class="resposta">Ainda! Mas essa é justamente uma das melhores justificativas para fazer a formação: sair preparada antes de precisar. Pacientes oncológicos cada vez mais buscam profissionais de estética como parte do autocuidado durante o tratamento. Você vai estar pronta quando esse momento chegar.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHECKLIST FECHAMENTO -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-cascavel">✅</div>
+      <h2>Roteiro de fechamento</h2>
+    </div>
+    <div class="secao-body">
+      <div class="check-list">
+        <div class="check-item"><span class="num num-azul">1</span><span>Confirme a área de atuação da pessoa</span></div>
+        <div class="check-item"><span class="num num-azul">2</span><span>Apresente o evento: 2 dias presenciais, 30 vagas, última turma 2026 em Cascavel</span></div>
+        <div class="check-item"><span class="num num-azul">3</span><span>Descreva brevemente a programação dos dois dias</span></div>
+        <div class="check-item"><span class="num num-azul">4</span><span>Apresente as duas opcoes: Somente Presencial R$2.500 e Combo R$3.500 (economiza R$1.000)</span></div>
+        <div class="check-item"><span class="num num-azul">5</span><span>Destaque o combo: acesso imediato à Drenagem Online + dois certificados + maior custo-benefício</span></div>
+        <div class="check-item"><span class="num num-azul">6</span><span>Reforce a escassez: "vagas preenchendo rápido, última turma do ano"</span></div>
+        <div class="check-item"><span class="num num-azul">7</span><span>Envie o link correto conforme a escolha da pessoa</span></div>
+        <div class="check-item"><span class="num num-azul">8</span><span>Se não responder em 24h, use o script de seguimento com o gatilho de escassez</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+function showTab(id, btn, activeClass) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-headspa','active-drenagem','active-cascavel'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add(activeClass);
+}
+
+function copiar(btn, id) {
+  const texto = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(texto).then(() => {
+    btn.textContent = 'Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar mensagem'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
