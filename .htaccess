@@ -2,6 +2,10 @@ Options -Indexes
 DirectoryIndex link-estetica-paliativa.html index.html index.php
 Header set Access-Control-Allow-Origin "*"
 
+# Passa header Authorization para PHP (Apache bloqueia por padrão)
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # Cache curto para config.json
 <FilesMatch "config\.json$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"

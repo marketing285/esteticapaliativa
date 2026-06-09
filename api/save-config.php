@@ -13,7 +13,10 @@ if (!$adminToken) {
     exit;
 }
 
-$auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+$auth = $_SERVER['HTTP_AUTHORIZATION']
+     ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+     ?? (function_exists('getallheaders') ? (getallheaders()['Authorization'] ?? '') : '')
+     ?? '';
 if ($auth !== 'Bearer ' . $adminToken) {
     http_response_code(403);
     echo json_encode(['error' => 'Nao autorizado']);
