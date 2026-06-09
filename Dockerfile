@@ -7,8 +7,8 @@ RUN a2enmod rewrite headers
 COPY . /var/www/html/
 
 # Garante que a pasta data existe e tem permissão de escrita
-RUN mkdir -p /var/www/html/data \
-    && chmod 755 /var/www/html/data \
+RUN mkdir -p /var/www/html/data/leads \
+    && chmod -R 755 /var/www/html/data \
     && chown -R www-data:www-data /var/www/html/data
 
 # Configura Apache para permitir .htaccess

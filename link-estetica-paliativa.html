@@ -274,6 +274,28 @@
     .phone { padding: 40px 20px 100px; }
     .wa-float { right: 20px; transform: none; bottom: 20px; }
   }
+
+  /* FORMULARIO DE PRE-INSCRICAO */
+  .form-input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--mid);
+    border: 1px solid rgba(200,146,42,.25);
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+    outline: none;
+    transition: border-color .2s;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: rgba(248,246,242,.3); }
+  .form-fields { display: flex; flex-direction: column; gap: 10px; }
+  .form-erro { color: #ef4444; font-size: 13px; text-align: center; margin-top: 4px; display: none; }
+  .form-sucesso { display: none; flex-direction: column; align-items: center; gap: 20px; text-align: center; padding: 20px 0; }
+  .form-sucesso .check-icon { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-light)); display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--black); }
+  .form-sucesso h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--white); }
+  .form-sucesso p { font-size: 13.5px; color: rgba(248,246,242,.6); max-width: 280px; }
 </style>
 </head>
 <body>
@@ -312,6 +334,43 @@
     <div class="eyebrow">Evento Presencial</div>
     <div class="screen-title">Vivências e formações ao vivo</div>
     <div id="presencial-content"></div>
+  </div>
+
+
+  <!-- SCREEN 4: FORMULARIO DE PRE-INSCRICAO -->
+  <div class="screen" id="screen-form">
+    <button class="back-btn" data-back="online"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+    <div class="eyebrow" id="form-eyebrow">Pre-inscricao</div>
+    <div class="screen-title" id="form-titulo">Reservar minha vaga</div>
+
+    <div id="form-estado">
+      <p class="note" style="text-align:center;margin-bottom:8px;">Preencha seus dados e entraremos em contato quando as vagas abrirem.</p>
+      <div class="form-fields">
+        <input type="text"  class="form-input" id="f-nome"      placeholder="Nome completo" autocomplete="name">
+        <input type="email" class="form-input" id="f-email"     placeholder="E-mail" autocomplete="email">
+        <input type="tel"   class="form-input" id="f-whatsapp"  placeholder="WhatsApp com DDD (ex: 14999999999)" autocomplete="tel">
+        <button class="link-btn primary" id="f-submit" onclick="submeterForm()">
+          <span class="icon"><i class="fa-solid fa-paper-plane"></i></span>
+          <span class="txt"><strong>Confirmar pre-inscricao</strong><span>Gratuito e sem compromisso</span></span>
+          <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+        <p class="form-erro" id="f-erro"></p>
+      </div>
+    </div>
+
+    <div class="form-sucesso" id="form-sucesso">
+      <div class="check-icon">&#10003;</div>
+      <h3>Pre-inscricao confirmada!</h3>
+      <p>Seus dados foram registrados. Em breve a Vanessa entrara em contato.</p>
+      <a id="form-wa-link" class="link-btn primary" href="#" target="_blank" rel="noopener" style="width:100%;">
+        <span class="icon"><i class="fa-brands fa-whatsapp"></i></span>
+        <span class="txt"><strong>Falar com a Vanessa agora</strong><span>Enviar uma mensagem pelo WhatsApp</span></span>
+        <span class="arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+      </a>
+      <button class="back-btn" onclick="showScreen('online')" style="align-self:center;margin-top:4px;">
+        <i class="fa-solid fa-arrow-left"></i> Ver outros cursos
+      </button>
+    </div>
   </div>
 
   <!-- SCREEN 3: CURSOS ONLINE -->
@@ -389,12 +448,20 @@
        RENDER — cursos online
        ========================================================= */
     const cursosBox = document.getElementById('cursos-content');
-    cursosBox.innerHTML = CONFIG.cursos.map(c => `
-      <a class="link-btn" href="${c.link}?utm_source=instagram&utm_medium=stories&utm_campaign=link-bio&utm_content=${encodeURIComponent(c.nome.toLowerCase().replace(/\s+/g,'-'))}" target="_blank" rel="noopener" data-track="curso_${c.nome}">
+    cursosBox.innerHTML = CONFIG.cursos.map(c => {
+      if (c.modo === 'form') {
+        return `<button class="link-btn" data-track="curso_form_${c.nome}" onclick="abrirFormCurso(${JSON.stringify(c.nome)})">
+          <span class="icon"><i class="fa-solid ${c.icon}"></i></span>
+          <span class="txt"><strong>${c.nome}</strong><span>${c.desc}</span></span>
+          <span class="arrow" style="color:var(--gold-light);font-size:12px;white-space:nowrap;"><i class="fa-solid fa-file-lines"></i><br><span style="font-size:10px;display:block;margin-top:2px;">Pre-inscricao</span></span>
+        </button>`;
+      }
+      return `<a class="link-btn" href="${c.link}?utm_source=instagram&utm_medium=stories&utm_campaign=link-bio&utm_content=${encodeURIComponent(c.nome.toLowerCase().replace(/\s+/g,'-'))}" target="_blank" rel="noopener" data-track="curso_${c.nome}">
         <span class="icon"><i class="fa-solid ${c.icon}"></i></span>
         <span class="txt"><strong>${c.nome}</strong><span>${c.desc}</span></span>
         <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
-      </a>`).join('');
+      </a>`;
+    }).join('');
 
     /* =========================================================
        NAVEGAÇÃO entre telas
@@ -402,7 +469,8 @@
     const screens = {
       home: document.getElementById('screen-home'),
       presencial: document.getElementById('screen-presencial'),
-      online: document.getElementById('screen-online')
+      online: document.getElementById('screen-online'),
+      form: document.getElementById('screen-form')
     };
     function showScreen(name) {
       Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -428,7 +496,8 @@
       const messages = {
         home: 'Olá! Vim pelo link dos stories da Vanessa e quero saber mais sobre as formações.',
         presencial: 'Olá! Vim pelo link dos stories e tenho interesse no evento presencial.',
-        online: 'Olá! Vim pelo link dos stories e tenho interesse nas formações online.'
+        online: 'Olá! Vim pelo link dos stories e tenho interesse nas formações online.',
+        form: 'Olá! Fiz minha pré-inscrição pelo link dos stories e quero saber mais informações.'
       };
       const link = document.getElementById('wa-float');
       const text = encodeURIComponent(messages[context] || messages.home);
@@ -446,6 +515,76 @@
       console.log('[link-bio]', event);
     }
     track('view_home');
+  }
+
+
+  let _formCurso = '';
+  function abrirFormCurso(nomeCurso) {
+    _formCurso = nomeCurso;
+    document.getElementById('form-eyebrow').textContent = nomeCurso;
+    document.getElementById('form-titulo').textContent = 'Reservar minha vaga';
+    document.getElementById('form-estado').style.display = '';
+    document.getElementById('form-sucesso').style.display = 'none';
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-whatsapp').value = '';
+    document.getElementById('f-erro').style.display = 'none';
+    showScreen('form');
+  }
+
+  async function submeterForm() {
+    const nome     = document.getElementById('f-nome').value.trim();
+    const email    = document.getElementById('f-email').value.trim();
+    const whatsapp = document.getElementById('f-whatsapp').value.trim();
+    const erroEl   = document.getElementById('f-erro');
+
+    if (!nome || !email || !whatsapp) {
+      erroEl.textContent = 'Preencha todos os campos para continuar.';
+      erroEl.style.display = 'block';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      erroEl.textContent = 'Digite um e-mail valido.';
+      erroEl.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('f-submit');
+    btn.style.opacity = '.6';
+    btn.style.pointerEvents = 'none';
+    erroEl.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/pre-inscricao.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ nome, email, whatsapp, curso: _formCurso }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        // monta link de aviso para a Vanessa
+        const _CONFIG_WA = document.getElementById('wa-float').href.match(/wa\.me\/(\d+)/)?.[1] || '5514996908256';
+        const msg = encodeURIComponent(
+          `Nova pre-inscricao recebida!
+
+Curso: ${_formCurso}
+Nome: ${nome}
+E-mail: ${email}
+WhatsApp: ${whatsapp}`
+        );
+        document.getElementById('form-wa-link').href = `https://wa.me/${_CONFIG_WA}?text=${msg}`;
+        document.getElementById('form-estado').style.display = 'none';
+        document.getElementById('form-sucesso').style.display = 'flex';
+      } else {
+        erroEl.textContent = 'Erro ao enviar. Tente novamente.';
+        erroEl.style.display = 'block';
+      }
+    } catch(e) {
+      erroEl.textContent = 'Erro de conexao. Tente novamente.';
+      erroEl.style.display = 'block';
+    }
+    btn.style.opacity = '';
+    btn.style.pointerEvents = '';
   }
 
   initPage();
