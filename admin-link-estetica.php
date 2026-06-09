@@ -537,38 +537,36 @@ function renderFunil(data) {
   html += '<div class="funil-divider"><span>Evento Presencial</span></div>';
   html += '<div class="funil-sub">';
   html += stepHtml('Clicou em Evento Presencial', 'view_presencial', presencial, pct(presencial, visitantes));
-  if (waPresencial > 0 || formPresencial > 0) {
-    html += '<div class="funil-sub">';
-    if (waPresencial > 0)   html += stepHtml('Clicou no WhatsApp', 'presencial_whatsapp_preinscricao', waPresencial, pct(waPresencial, presencial));
-    if (formPresencial > 0) html += stepHtml('Abriu formulario', 'presencial_form_captura', formPresencial, pct(formPresencial, presencial));
-    html += '</div>';
-  }
+  html += '<div class="funil-sub">';
+  html += stepHtml('Clicou no WhatsApp (pre-inscricao WA)', 'presencial_whatsapp_preinscricao', waPresencial, pct(waPresencial, presencial));
+  html += stepHtml('Abriu formulario de captura', 'presencial_form_captura', formPresencial, pct(formPresencial, presencial));
+  html += '</div>';
   html += '</div>';
 
   // Online
   html += '<div class="funil-divider"><span>Formacoes Online</span></div>';
   html += '<div class="funil-sub">';
   html += stepHtml('Clicou em Formacoes Online', 'view_online', online, pct(online, visitantes));
+  html += '<div class="funil-sub">';
   if (cursosDetalhes.length > 0) {
-    html += '<div class="funil-sub">';
     cursosDetalhes.forEach(([key, val]) => {
       const isForm = key.startsWith('curso_form_');
       const nome = isForm ? key.replace('curso_form_', '') : key.replace('curso_', '');
       const label = isForm ? `Abriu formulario: ${nome}` : `Clicou no link: ${nome}`;
       html += stepHtml(label, key, val, pct(val, online));
     });
-    html += '</div>';
+  } else {
+    html += stepHtml('Nenhum clique em curso ainda', 'curso_*', 0, null);
   }
+  html += '</div>';
   html += '</div>';
 
   // Conversao formularios
-  if (totalForms > 0 || formSuccess > 0) {
-    html += '<div class="funil-divider"><span>Formularios</span></div>';
-    html += '<div class="funil-sub">';
-    html += stepHtml('Formularios abertos', 'presencial + cursos', totalForms, pct(totalForms, visitantes));
-    html += stepHtml('Formularios enviados com sucesso', 'form_submit_success', formSuccess, pct(formSuccess, totalForms));
-    html += '</div>';
-  }
+  html += '<div class="funil-divider"><span>Formularios</span></div>';
+  html += '<div class="funil-sub">';
+  html += stepHtml('Formularios abertos', 'presencial + cursos', totalForms, pct(totalForms, visitantes));
+  html += stepHtml('Formularios enviados com sucesso', 'form_submit_success', formSuccess, pct(formSuccess, totalForms));
+  html += '</div>';
 
   html += '</div>';
 
