@@ -450,7 +450,7 @@
     const cursosBox = document.getElementById('cursos-content');
     cursosBox.innerHTML = CONFIG.cursos.map(c => {
       if (c.modo === 'form') {
-        return `<button class="link-btn" data-track="curso_form_${c.nome}" onclick="abrirFormCurso(${JSON.stringify(c.nome)})">
+        return `<button class="link-btn" data-track="curso_form_${c.nome}" data-curso="${c.nome.replace(/"/g,'&quot;')}" onclick="abrirFormCurso(this.dataset.curso)">
           <span class="icon"><i class="fa-solid ${c.icon}"></i></span>
           <span class="txt"><strong>${c.nome}</strong><span>${c.desc}</span></span>
           <span class="arrow" style="color:var(--gold-light);font-size:12px;white-space:nowrap;"><i class="fa-solid fa-file-lines"></i><br><span style="font-size:10px;display:block;margin-top:2px;">Pre-inscricao</span></span>
