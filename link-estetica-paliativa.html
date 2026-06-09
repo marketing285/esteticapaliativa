@@ -424,19 +424,31 @@
        ========================================================= */
     const presencialBox = document.getElementById('presencial-content');
     const p = CONFIG.presencial;
+    const _eventCard = p.cidade ? `
+        <div class="event-card">
+          <div class="event-loc"><i class="fa-solid fa-location-dot"></i> ${p.cidade}</div>
+          <div class="event-date">${p.data}</div>
+        </div>` : '';
+
     if (p.modo === 'compra') {
       presencialBox.innerHTML = `
+        ${_eventCard}
         <a class="link-btn primary" href="${p.linkCompra}?utm_source=instagram&utm_medium=stories&utm_campaign=link-bio&utm_content=evento-presencial-compra" target="_blank" rel="noopener" data-track="presencial_compra">
           <span class="icon"><i class="fa-solid fa-ticket"></i></span>
           <span class="txt"><strong>${p.titulo}</strong><span>${p.desc}</span></span>
           <span class="arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
         </a>`;
+    } else if (p.modo === 'form-captura') {
+      presencialBox.innerHTML = `
+        ${_eventCard}
+        <button class="link-btn primary" onclick="abrirFormCurso('Evento Presencial')" data-track="presencial_form_captura" style="width:100%;border:none;text-align:left;cursor:pointer;">
+          <span class="icon"><i class="fa-solid fa-file-lines"></i></span>
+          <span class="txt"><strong>${p.titulo}</strong><span>${p.desc}</span></span>
+          <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>`;
     } else {
       presencialBox.innerHTML = `
-        <div class="event-card">
-          <div class="event-loc"><i class="fa-solid fa-location-dot"></i> ${p.cidade}</div>
-          <div class="event-date">${p.data}</div>
-        </div>
+        ${_eventCard}
         <a class="link-btn primary" href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(p.mensagemWhatsapp)}" target="_blank" rel="noopener" data-track="presencial_whatsapp_preinscricao">
           <span class="icon"><i class="fa-brands fa-whatsapp"></i></span>
           <span class="txt"><strong>${p.titulo}</strong><span>${p.desc}</span></span>

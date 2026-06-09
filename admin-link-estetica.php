@@ -170,6 +170,7 @@ $token = $isLoggedIn ? htmlspecialchars(getenv('ADMIN_TOKEN'), ENT_QUOTES) : '';
           <label>Modo do botao</label>
           <div class="toggle-group">
             <button class="toggle-btn active" id="btn-form" onclick="setModo('form')">Pre-inscricao (WhatsApp)</button>
+            <button class="toggle-btn" id="btn-captura" onclick="setModo('form-captura')">Formulario (captura leads)</button>
             <button class="toggle-btn" id="btn-compra" onclick="setModo('compra')">Vagas abertas (link direto)</button>
           </div>
           <div class="hint">Alterne quando as vagas abrirem</div>
@@ -309,12 +310,14 @@ function populateForm(cfg) {
 function setModo(m) {
   modo = m;
   document.getElementById('btn-form').classList.toggle('active', m === 'form');
+  document.getElementById('btn-captura').classList.toggle('active', m === 'form-captura');
   document.getElementById('btn-compra').classList.toggle('active', m === 'compra');
-  document.getElementById('campo-wa-msg').style.display   = m === 'form'   ? '' : 'none';
-  document.getElementById('campo-link-compra').style.display = m === 'compra' ? '' : 'none';
+  document.getElementById('campo-wa-msg').style.display      = m === 'form'         ? '' : 'none';
+  document.getElementById('campo-link-compra').style.display = m === 'compra'       ? '' : 'none';
   const b = document.getElementById('modo-badge');
-  b.textContent = m === 'form' ? 'Pre-inscricao' : 'Vagas abertas';
-  b.className = 'badge ' + (m === 'form' ? 'badge-form' : 'badge-compra');
+  if (m === 'form')         { b.textContent = 'Pre-inscricao WhatsApp'; b.className = 'badge badge-form'; }
+  else if (m === 'form-captura') { b.textContent = 'Formulario'; b.className = 'badge badge-inscricao'; }
+  else                      { b.textContent = 'Vagas abertas';  b.className = 'badge badge-compra'; }
 }
 
 function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
