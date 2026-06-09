@@ -109,6 +109,31 @@ $token = $isLoggedIn ? htmlspecialchars(getenv('ADMIN_TOKEN'), ENT_QUOTES) : '';
   .logout-link:hover{color:#e8b84b;}
   .status-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;}
   .status-txt{font-size:12px;color:#4ade80;}
+
+  /* Funil */
+  .funil-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .funil-step { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: #fafafa; border-radius: 10px; border: 1px solid #ebebeb; }
+  .funil-step.top { background: #fff; border-color: #c8922a; }
+  .funil-step .fs-label { flex: 1; font-size: 14px; font-weight: 600; color: #111; }
+  .funil-step .fs-sub { font-size: 12px; color: #888; font-weight: 400; margin-top: 2px; }
+  .funil-step .fs-count { font-size: 22px; font-weight: 800; color: #111; min-width: 60px; text-align: right; }
+  .funil-step .fs-pct { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; min-width: 52px; text-align: center; }
+  .pct-high { background: #dcfce7; color: #15803d; }
+  .pct-mid  { background: #fef3c7; color: #b45309; }
+  .pct-low  { background: #fee2e2; color: #dc2626; }
+  .pct-neu  { background: #f4f4f5; color: #52525b; }
+  .funil-divider { display: flex; align-items: center; gap: 10px; padding: 0 18px; }
+  .funil-divider::before { content: ''; flex: 1; height: 1px; background: #e4e4e7; }
+  .funil-divider span { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #a1a1aa; white-space: nowrap; }
+  .funil-divider::after { content: ''; flex: 1; height: 1px; background: #e4e4e7; }
+  .funil-sub { padding-left: 28px; display: flex; flex-direction: column; gap: 6px; }
+  .funil-sub .funil-step { background: #fff; }
+  .eventos-raw { margin-top: 8px; }
+  .eventos-raw summary { font-size: 13px; font-weight: 600; color: #71717a; cursor: pointer; padding: 8px 0; }
+  .eventos-raw table { width: 100%; font-size: 13px; margin-top: 8px; border-collapse: collapse; }
+  .eventos-raw td { padding: 6px 8px; border-bottom: 1px solid #f4f4f5; }
+  .eventos-raw td:last-child { text-align: right; font-weight: 700; }
+  .funil-updated { font-size: 11px; color: #a1a1aa; text-align: right; margin-top: 8px; }
   @media(max-width:600px){.row{grid-template-columns:1fr;} .leads-table td:nth-child(2){display:none;}}
 </style>
 </head>
@@ -205,6 +230,20 @@ $token = $isLoggedIn ? htmlspecialchars(getenv('ADMIN_TOKEN'), ENT_QUOTES) : '';
   <!-- ==================== ABA OPORTUNIDADES ==================== -->
   <div class="tab-panel" id="tab-opor">
 
+    <!-- FUNIL -->
+    <div class="card" id="card-funil">
+      <div class="card-header" style="justify-content:space-between;">
+        <h2>Funil de cliques</h2>
+        <button class="btn-csv" onclick="carregarFunil()" id="btn-refresh-funil">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.29"/></svg>
+          Atualizar
+        </button>
+      </div>
+      <div class="card-body">
+        <div id="funil-content"><div class="empty-state">Carregando...</div></div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-header" style="justify-content:space-between;">
         <h2>Leads por curso</h2>
@@ -273,7 +312,7 @@ function switchTab(name) {
     : document.querySelector('.tab-btn:nth-child(2)');
   btn.classList.add('active');
   document.getElementById('save-bar').style.display = name === 'config' ? '' : 'none';
-  if (name === 'opor') carregarLeads();
+  if (name === 'opor') { carregarFunil(); carregarLeads(); }
 }
 
 /* ===== CONFIG ===== */
@@ -425,6 +464,129 @@ function showToast(type) {
   const t = document.getElementById('toast-' + type);
   t.style.display = 'inline';
   setTimeout(() => t.style.display = 'none', 3000);
+}
+
+
+/* ===== FUNIL ===== */
+async function carregarFunil() {
+  document.getElementById('funil-content').innerHTML = '<div class="empty-state">Carregando...</div>';
+  try {
+    const res = await fetch('/api/get-analytics.php', {
+      headers: { 'Authorization': 'Bearer ' + ADMIN_TOKEN }
+    });
+    const data = await res.json();
+    renderFunil(data.data || { events: {} });
+  } catch(e) {
+    document.getElementById('funil-content').innerHTML = '<div class="empty-state">Erro ao carregar dados</div>';
+  }
+}
+
+function pctClass(v) {
+  if (v === null) return 'pct-neu';
+  if (v >= 50) return 'pct-high';
+  if (v >= 20) return 'pct-mid';
+  return 'pct-low';
+}
+
+function fmtPct(v) {
+  if (v === null) return '<span class="fs-pct pct-neu">-</span>';
+  const cls = pctClass(v);
+  return `<span class="fs-pct ${cls}">${v}%</span>`;
+}
+
+function stepHtml(label, sub, count, pct) {
+  return `<div class="funil-step">
+    <div style="flex:1"><div class="fs-label">${label}</div>${sub ? `<div class="fs-sub">${sub}</div>` : ''}</div>
+    <div class="fs-count">${count.toLocaleString('pt-BR')}</div>
+    ${fmtPct(pct)}
+  </div>`;
+}
+
+function renderFunil(data) {
+  const e = data.events || {};
+  const n = k => e[k] || 0;
+  const pct = (a, b) => b === 0 ? null : Math.round((a / b) * 100);
+
+  const visitantes   = n('view_home');
+  const presencial   = n('view_presencial');
+  const online       = n('view_online');
+  const waPresencial = n('presencial_whatsapp_preinscricao');
+  const formPresencial = n('presencial_form_captura');
+
+  // Soma todos os cliques em cursos (link e form)
+  const cursosLink = Object.entries(e).filter(([k]) => k.startsWith('curso_') && !k.startsWith('curso_form_')).reduce((s,[,v]) => s+v, 0);
+  const cursosForm = Object.entries(e).filter(([k]) => k.startsWith('curso_form_')).reduce((s,[,v]) => s+v, 0);
+  const formSuccess = n('form_submit_success');
+  const totalForms  = formPresencial + cursosForm;
+
+  // Cursos individuais
+  const cursosDetalhes = Object.entries(e)
+    .filter(([k]) => k.startsWith('curso_'))
+    .sort(([,a],[,b]) => b - a);
+
+  let html = '<div class="funil-wrap">';
+
+  // Visitantes
+  html += `<div class="funil-step top">
+    <div style="flex:1"><div class="fs-label">Visitantes na pagina</div><div class="fs-sub">view_home</div></div>
+    <div class="fs-count">${visitantes.toLocaleString('pt-BR')}</div>
+    <span class="fs-pct pct-neu">100%</span>
+  </div>`;
+
+  // Presencial
+  html += '<div class="funil-divider"><span>Evento Presencial</span></div>';
+  html += '<div class="funil-sub">';
+  html += stepHtml('Clicou em Evento Presencial', 'view_presencial', presencial, pct(presencial, visitantes));
+  if (waPresencial > 0 || formPresencial > 0) {
+    html += '<div class="funil-sub">';
+    if (waPresencial > 0)   html += stepHtml('Clicou no WhatsApp', 'presencial_whatsapp_preinscricao', waPresencial, pct(waPresencial, presencial));
+    if (formPresencial > 0) html += stepHtml('Abriu formulario', 'presencial_form_captura', formPresencial, pct(formPresencial, presencial));
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Online
+  html += '<div class="funil-divider"><span>Formacoes Online</span></div>';
+  html += '<div class="funil-sub">';
+  html += stepHtml('Clicou em Formacoes Online', 'view_online', online, pct(online, visitantes));
+  if (cursosDetalhes.length > 0) {
+    html += '<div class="funil-sub">';
+    cursosDetalhes.forEach(([key, val]) => {
+      const isForm = key.startsWith('curso_form_');
+      const nome = isForm ? key.replace('curso_form_', '') : key.replace('curso_', '');
+      const label = isForm ? `Abriu formulario: ${nome}` : `Clicou no link: ${nome}`;
+      html += stepHtml(label, key, val, pct(val, online));
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Conversao formularios
+  if (totalForms > 0 || formSuccess > 0) {
+    html += '<div class="funil-divider"><span>Formularios</span></div>';
+    html += '<div class="funil-sub">';
+    html += stepHtml('Formularios abertos', 'presencial + cursos', totalForms, pct(totalForms, visitantes));
+    html += stepHtml('Formularios enviados com sucesso', 'form_submit_success', formSuccess, pct(formSuccess, totalForms));
+    html += '</div>';
+  }
+
+  html += '</div>';
+
+  // Todos os eventos (expansivel)
+  if (Object.keys(e).length > 0) {
+    const rows = Object.entries(e).sort(([,a],[,b]) => b-a)
+      .map(([k,v]) => `<tr><td>${escHtml(k)}</td><td>${v.toLocaleString('pt-BR')}</td></tr>`).join('');
+    html += `<details class="eventos-raw">
+      <summary>Ver todos os eventos (${Object.keys(e).length})</summary>
+      <table><tbody>${rows}</tbody></table>
+    </details>`;
+  }
+
+  if (data.updatedAt) {
+    html += `<div class="funil-updated">Ultima atualizacao: ${formatarData(data.updatedAt)}</div>`;
+  }
+
+  document.getElementById('funil-content').innerHTML = html;
 }
 
 /* ===== OPORTUNIDADES ===== */

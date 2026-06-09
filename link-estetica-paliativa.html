@@ -524,7 +524,9 @@
       if (!event) return;
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: 'link_bio_click', link_bio_action: event });
-      console.log('[link-bio]', event);
+      const fd = new FormData();
+      fd.append('event', event);
+      navigator.sendBeacon('/api/track-event.php', fd);
     }
     track('view_home');
   }
@@ -587,6 +589,7 @@ E-mail: ${email}
 WhatsApp: ${whatsapp}`
         );
         document.getElementById('form-wa-link').href = `https://wa.me/${_CONFIG_WA}?text=${msg}`;
+        track('form_submit_success');
         document.getElementById('form-estado').style.display = 'none';
         document.getElementById('form-sucesso').style.display = 'flex';
       } else {
