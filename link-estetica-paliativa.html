@@ -518,17 +518,23 @@
     updateWhatsapp('home');
 
     /* =========================================================
-       TRACKING
+       TRACKING — listener universal para todos os [data-track]
+       que não são [data-nav] (WA, links de curso, form capture)
        ========================================================= */
-    function track(event) {
-      if (!event) return;
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'link_bio_click', link_bio_action: event });
-      const fd = new FormData();
-      fd.append('event', event);
-      navigator.sendBeacon('/api/track-event.php', fd);
-    }
+    document.querySelectorAll('[data-track]:not([data-nav])').forEach(el => {
+      el.addEventListener('click', () => track(el.dataset.track));
+    });
     track('view_home');
+  }
+
+  /* track() em escopo global — acessível por abrirFormCurso e submeterForm */
+  function track(event) {
+    if (!event) return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'link_bio_click', link_bio_action: event });
+    const fd = new FormData();
+    fd.append('event', event);
+    navigator.sendBeacon('/api/track-event.php', fd);
   }
 
 
@@ -546,6 +552,9 @@
     // showScreen eh interna ao initPage — troca de tela diretamente
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-form').classList.add('active');
+    // Atualiza botão WA flutuante para mensagem de formulário
+    const _waNum = (document.getElementById('wa-float').href.match(/wa\.me\/(\d+)/) || [])[1] || '5514996908256';
+    document.getElementById('wa-float').href = `https://wa.me/${_waNum}?text=${encodeURIComponent('Olá! Fiz minha pré-inscrição pelo link dos stories e quero saber mais informações.')}`;
   }
 
   async function submeterForm() {
