@@ -659,10 +659,9 @@ function selectLeadTab(slug) {
 function waMsg(nome, cursoNome) {
   const primeiroNome = nome.trim().split(' ')[0];
   return encodeURIComponent(
-    `Olá, ${primeiroNome}! 🌿\n` +
+    `Olá, ${primeiroNome}!\n` +
     `Tudo bem por aí?\n\n` +
-    `Vi aqui que você demonstrou interesse na formação *${cursoNome}* e vim te dar um oi pessoalmente 😊\n\n` +
-    `Posso te contar mais sobre o conteúdo, tirar suas dúvidas ou te ajudar a garantir a sua vaga. É só me falar!`
+    `Vi aqui que você demonstrou interesse na formação ${cursoNome} e vim te dar um oi pessoalmente.`
   );
 }
 
