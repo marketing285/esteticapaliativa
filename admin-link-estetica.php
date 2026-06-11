@@ -301,6 +301,7 @@ let cursosData = [];
 let leadsData  = {};
 let activeLeadSlug = null;
 let editingLead = null;
+let slugToNome = {};
 
 /* ===== TABS ===== */
 function switchTab(name) {
@@ -633,6 +634,8 @@ function renderLeadsTabs() {
     return;
   }
 
+  slugToNome = Object.fromEntries(allCursos.map(c => [c.slug, c.nome]));
+
   if (!activeLeadSlug || !allSlugs.has(activeLeadSlug)) {
     activeLeadSlug = allCursos[0].slug;
   }
@@ -653,9 +656,25 @@ function selectLeadTab(slug) {
   renderLeadsTable(slug);
 }
 
+function waMsg(nome, cursoNome) {
+  const primeiroNome = nome.trim().split(' ')[0];
+  return encodeURIComponent(
+    `Olá, ${primeiroNome}! 🌿\n` +
+    `Tudo bem por aí?\n\n` +
+    `Vi aqui que você demonstrou interesse na formação *${cursoNome}* e vim te dar um oi pessoalmente 😊\n\n` +
+    `Posso te contar mais sobre o conteúdo, tirar suas dúvidas ou te ajudar a garantir a sua vaga. É só me falar!`
+  );
+}
+
+function waNumero(raw) {
+  const n = raw.replace(/\D/g, '');
+  return n.startsWith('55') ? n : '55' + n;
+}
+
 function renderLeadsTable(slug) {
   const leads = (leadsData[slug] || []).slice().reverse();
   const el = document.getElementById('leads-content');
+  const cursoNome = slugToNome[slug] || slug;
 
   if (leads.length === 0) {
     el.innerHTML = '<div class="empty-state">Nenhum lead para este curso ainda</div>';
@@ -678,7 +697,14 @@ function renderLeadsTable(slug) {
           <tr>
             <td><strong>${escHtml(l.nome)}</strong></td>
             <td>${escHtml(l.email)}</td>
-            <td><a href="https://wa.me/${l.whatsapp}" target="_blank" style="color:#22c55e;text-decoration:none;">${l.whatsapp}</a></td>
+            <td>
+              <a href="https://wa.me/${waNumero(l.whatsapp)}?text=${waMsg(l.nome, cursoNome)}"
+                 target="_blank"
+                 title="Abrir conversa com mensagem pré-preenchida"
+                 style="color:#22c55e;text-decoration:none;font-weight:600;">
+                📲 ${escHtml(l.whatsapp)}
+              </a>
+            </td>
             <td style="color:#71717a;white-space:nowrap;">${formatarData(l.criadoEm)}</td>
             <td style="white-space:nowrap;display:flex;gap:6px;">
               <button class="btn-sm btn-edit" onclick="abrirEdicao('${escHtml(slug)}','${escHtml(l.id)}','${escHtml(l.nome)}','${escHtml(l.email)}','${escHtml(l.whatsapp)}')">Editar</button>
