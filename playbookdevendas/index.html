@@ -22,6 +22,7 @@
   .tab-btn.active-headspa { color: #c8922a; border-bottom-color: #c8922a; }
   .tab-btn.active-drenagem { color: #7c3aed; border-bottom-color: #7c3aed; }
   .tab-btn.active-cascavel { color: #0ea5e9; border-bottom-color: #0ea5e9; }
+  .tab-btn.active-tubarao { color: #0d9488; border-bottom-color: #0d9488; }
   .tab-panel { display: none; max-width: 900px; margin: 0 auto; padding: 40px 40px 80px; }
   .tab-panel.active { display: block; }
 
@@ -30,6 +31,7 @@
   .badge-headspa { background: #fef3c7; color: #b45309; }
   .badge-drenagem { background: #ede9fe; color: #6d28d9; }
   .badge-cascavel { background: #e0f2fe; color: #0369a1; }
+  .badge-tubarao { background: #ccfbf1; color: #0f766e; }
 
   /* FICHA RAPIDA */
   .ficha { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 36px; }
@@ -45,6 +47,7 @@
   .ico-headspa { background: #fef3c7; }
   .ico-drenagem { background: #ede9fe; }
   .ico-cascavel { background: #e0f2fe; }
+  .ico-tubarao { background: #ccfbf1; }
   .secao-header h2 { font-size: 15px; font-weight: 700; }
   .secao-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
 
@@ -52,6 +55,7 @@
   .script-card { background: #f8f7f4; border-radius: 12px; padding: 20px; border-left: 4px solid #e8b84b; }
   .script-card.roxo { border-left-color: #7c3aed; }
   .script-card.azul { border-left-color: #0ea5e9; }
+  .script-card.verde { border-left-color: #0d9488; }
   .script-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #aaa; margin-bottom: 10px; }
   .script-text { font-size: 14px; line-height: 1.8; color: #222; white-space: pre-line; }
   .script-hint { font-size: 12px; color: #888; margin-top: 10px; font-style: italic; }
@@ -71,6 +75,8 @@
   .q-obj-roxo { background: #fee2e2; color: #dc2626; }
   .q-faq-azul { background: #e0f2fe; color: #0369a1; }
   .q-obj-azul { background: #fee2e2; color: #dc2626; }
+  .q-faq-verde { background: #ccfbf1; color: #0f766e; }
+  .q-obj-verde { background: #fee2e2; color: #dc2626; }
 
   /* CHECKLIST */
   .check-list { display: flex; flex-direction: column; gap: 10px; }
@@ -79,6 +85,7 @@
   .num-ouro { background: #c8922a; color: #fff; }
   .num-roxo { background: #7c3aed; color: #fff; }
   .num-azul { background: #0ea5e9; color: #fff; }
+  .num-verde { background: #0d9488; color: #fff; }
 
   /* ALERTA */
   .alerta { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px 20px; font-size: 13.5px; color: #78350f; display: flex; gap: 10px; align-items: flex-start; }
@@ -110,6 +117,7 @@
   <button class="tab-btn active-headspa" onclick="showTab('headspa', this, 'active-headspa')">HEAD SPA Vitallis</button>
   <button class="tab-btn" onclick="showTab('drenagem', this, 'active-drenagem')">Drenagem Oncológica</button>
   <button class="tab-btn" onclick="showTab('cascavel', this, 'active-cascavel')">Evento Cascavel</button>
+  <button class="tab-btn" onclick="showTab('tubarao', this, 'active-tubarao')">Evento Tubarão</button>
 </div>
 
 
@@ -140,8 +148,8 @@
       <div style="font-size:12px;color:#666;">esteticapaliativa.com/spa-vitallis/</div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
-      <a href="https://esteticapaliativa.com/spa-vitallis/?utm_source=instagram&utm_medium=stories&utm_campaign=link-bio&utm_content=head-spa-vitallis" target="_blank" style="background:#222;color:#ccc;border:1px solid #444;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Ver página</a>
-      <button onclick="navigator.clipboard.writeText('https://esteticapaliativa.com/spa-vitallis/?utm_source=instagram&utm_medium=stories&utm_campaign=link-bio&utm_content=head-spa-vitallis').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
+      <a href="https://esteticapaliativa.com/spa-vitallis/" target="_blank" style="background:#222;color:#ccc;border:1px solid #444;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Ver página</a>
+      <button onclick="navigator.clipboard.writeText('https://esteticapaliativa.com/spa-vitallis/').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
     </div>
   </div>
   <div class="ficha">
@@ -386,8 +394,8 @@ O link de acesso é esse aqui: https://pay.kiwify.com.br/z1Eyase</div>
       <div style="font-size:12px;color:#666;">esteticapaliativa.com/drenagem/</div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
-      <a href="https://esteticapaliativa.com/drenagem/?utm_source=instagram&utm_medium=stories&utm_campaign=link-bio&utm_content=drenagem-oncol%C3%B3gica" target="_blank" style="background:#222;color:#ccc;border:1px solid #444;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Ver página</a>
-      <button onclick="navigator.clipboard.writeText('https://esteticapaliativa.com/drenagem/?utm_source=instagram&utm_medium=stories&utm_campaign=link-bio&utm_content=drenagem-oncol%C3%B3gica').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
+      <a href="https://esteticapaliativa.com/drenagem/" target="_blank" style="background:#222;color:#ccc;border:1px solid #444;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Ver página</a>
+      <button onclick="navigator.clipboard.writeText('https://esteticapaliativa.com/drenagem/').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
     </div>
   </div>
   <div class="ficha">
@@ -614,11 +622,11 @@ Posso te ajudar com alguma coisa?</div>
   <div style="background:#0a0a0a;border-radius:14px;border:1px solid #333;padding:16px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <div>
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:4px;">Página de vendas</div>
-      <div style="font-size:12px;color:#666;">esteticapaliativa.com/presencial/cascavel</div>
+      <div style="font-size:12px;color:#666;">esteticapaliativa.com/</div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
-      <a href="https://esteticapaliativa.com/presencial/cascavel/" target="_blank" style="background:#222;color:#ccc;border:1px solid #444;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Ver página</a>
-      <button onclick="navigator.clipboard.writeText('https://esteticapaliativa.com/presencial/cascavel/').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
+      <a href="https://esteticapaliativa.com/" target="_blank" style="background:#222;color:#ccc;border:1px solid #444;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Ver página</a>
+      <button onclick="navigator.clipboard.writeText('https://esteticapaliativa.com/').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
     </div>
   </div>
 
@@ -919,10 +927,383 @@ Posso te ajudar com alguma coisa?</div>
 </div>
 
 
+<!-- ============================================================
+     EVENTO TUBARÃO
+     ============================================================ -->
+<div class="tab-panel" id="tab-tubarao">
+
+  <div class="produto-badge badge-tubarao">Evento Presencial · Tubarão/SC</div>
+  <div class="urgencia">🔴 Vagas limitadas · Apenas 20 · Turma exclusiva em Tubarão</div>
+
+  <!-- LINK DIRETO -->
+  <div style="background:#0a0a0a;border-radius:14px;border:2px solid #0d9488;padding:20px 24px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#2dd4bf;margin-bottom:6px;">Link direto de pagamento</div>
+      <div style="font-size:13px;color:#ccc;">Presencial Tubarão + Combo · a pessoa seleciona no checkout</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">Kiwify · mesmo link para as duas opcoes</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
+      <a href="https://pay.kiwify.com.br/zJMEL5a" target="_blank" style="background:#0d9488;color:#000;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Abrir checkout</a>
+      <button onclick="navigator.clipboard.writeText('https://pay.kiwify.com.br/zJMEL5a').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
+    </div>
+  </div>
+  <!-- PAGINA DE VENDAS -->
+  <div style="background:#0a0a0a;border-radius:14px;border:1px solid #333;padding:16px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:4px;">Página de vendas</div>
+      <div style="font-size:12px;color:#666;">esteticapaliativa.com/presencial/tubarao</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
+      <a href="https://esteticapaliativa.com/presencial/tubarao" target="_blank" style="background:#222;color:#ccc;border:1px solid #444;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Ver página</a>
+      <button onclick="navigator.clipboard.writeText('https://esteticapaliativa.com/presencial/tubarao').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
+    </div>
+  </div>
+
+  <!-- PARCERIA UNIMED -->
+  <div style="background:#0a0a0a;border-radius:14px;border:2px solid #5eead4;padding:20px 24px;margin-bottom:28px;">
+    <div style="font-size:13.5px;color:#ccc;line-height:1.6;margin-bottom:14px;">
+      <span style="font-size:16px;">🤝</span> <strong style="color:#fff;">Apoio oficial: Unimed Tubarão.</strong> Colaboradores(as) da Unimed Tubarão têm <strong style="color:#5eead4;">20% de desconto exclusivo</strong> nesta formação. Confirme o vínculo funcional (carteirinha/crachá) antes de enviar o link.
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid #333;padding-top:14px;">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#2dd4bf;margin-bottom:6px;">Link com cupom UNIMED20 já aplicado</div>
+        <div style="font-size:13px;color:#ccc;">Copie e envie direto para colaboradores(as) da Unimed Tubarão</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
+        <a href="https://pay.kiwify.com.br/zJMEL5a?coupon=UNIMED20" target="_blank" style="background:#0d9488;color:#000;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:inline-block;">Abrir checkout</a>
+        <button onclick="navigator.clipboard.writeText('https://pay.kiwify.com.br/zJMEL5a?coupon=UNIMED20').then(()=>{this.textContent='Copiado!';setTimeout(()=>this.textContent='Copiar link',2000)})" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Copiar link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPCOES DE COMPRA -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;">
+    <div style="background:#fff;border-radius:14px;border:2px solid #e8b84b;padding:20px 22px;">
+      <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#b45309;margin-bottom:10px;">Somente Presencial</div>
+      <div style="font-size:26px;font-weight:800;color:#111;">R$ 2.500</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;">ou 12x de R$258,56 no cartão</div>
+      <ul style="margin-top:14px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#444;">
+        <li>2 dias de imersão presencial</li>
+        <li>Teoria e prática integradas</li>
+        <li>Apostila completa do curso</li>
+        <li>Certificado de conclusão</li>
+        <li>Grupo de suporte pós-curso</li>
+      </ul>
+    </div>
+    <div style="background:#0a0a0a;border-radius:14px;border:2px solid #e8b84b;padding:20px 22px;position:relative;">
+      <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#e8b84b;color:#000;font-size:11px;font-weight:800;padding:4px 14px;border-radius:20px;white-space:nowrap;">RECOMENDADO</div>
+      <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#e8b84b;margin-bottom:10px;">Combo Tubarão</div>
+      <div style="font-size:12px;color:#888;text-decoration:line-through;">De R$ 4.500</div>
+      <div style="font-size:26px;font-weight:800;color:#fff;">R$ 3.500</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;">ou 12x de R$361,98 · economiza R$1.000</div>
+      <ul style="margin-top:14px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#ccc;">
+        <li style="color:#e8b84b;font-weight:600;">Drenagem Oncológica online (acesso imediato)</li>
+        <li>2 dias de Estética Paliativa presencial</li>
+        <li>Apostila completa dos dois módulos</li>
+        <li>Dois certificados de conclusão</li>
+        <li>Grupo de suporte pós-curso</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ficha">
+    <div class="ficha-item">
+      <div class="fi-label">Data</div>
+      <div class="fi-valor">25 e 26/07</div>
+      <div class="fi-sub">Sábado e Domingo</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Local</div>
+      <div class="fi-valor">Ibis Tubarão</div>
+      <div class="fi-sub">R. Paraguai, 145 - Vila Moema</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Vagas</div>
+      <div class="fi-valor">20 vagas</div>
+      <div class="fi-sub">turma fechada</div>
+    </div>
+    <div class="ficha-item">
+      <div class="fi-label">Formato</div>
+      <div class="fi-valor">2 dias</div>
+      <div class="fi-sub">teoria e prática no mesmo dia</div>
+    </div>
+  </div>
+
+  <!-- O QUE VENDER -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-tubarao">🎯</div>
+      <h2>O que você está vendendo</h2>
+    </div>
+    <div class="secao-body">
+      <p>Uma imersão presencial de dois dias em Estética Paliativa com a Vanessa Menezes, no Ibis Tubarão. Turma exclusiva na cidade, com apenas 20 vagas. Quem participar sai com conhecimento teórico e prático aplicado, além de acesso ao módulo online de Drenagem Oncológica como bônus.</p>
+
+      <div class="alerta">
+        <span>🔥</span>
+        <span><strong>Principal gatilho de venda:</strong> "turma exclusiva em Tubarão" + "apenas 20 vagas". É uma turma bem menor que a de Cascavel (30 vagas), então a sensação de exclusividade e a urgência são ainda maiores.</span>
+      </div>
+
+      <div class="alerta">
+        <span>🤝</span>
+        <span><strong>Diferencial Tubarão:</strong> apoio oficial da Unimed Tubarão, com 20% de desconto exclusivo para colaboradores(as) da Unimed (cupom <strong>UNIMED20</strong>, link pronto no topo da aba). Use isso como gancho ao abordar leads que trabalham na área de saúde local.</span>
+      </div>
+
+      <div>
+        <strong>Para quem é:</strong>
+        <ul style="margin-top:8px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#444;">
+          <li>Esteticistas, enfermeiros, fisioterapeutas</li>
+          <li>Médicos, biomédicos, massoterapeuta</li>
+          <li>Terapeutas ocupacionais e estudantes de saúde</li>
+          <li>Qualquer profissional que queira atuar com pacientes oncológicos</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Programação dos 2 dias:</strong>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+          <div style="background:#f0fdfa;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong style="color:#0f766e;">Dia 1 (25/07 - Sábado)</strong><br>
+            <span style="color:#444;">Introdução à oncologia e aos cuidados paliativos, fisiopatologia do câncer, principais efeitos colaterais dos tratamentos, alterações cutâneas e manejo estético seguro, radiodermite, síndrome mão-pé, neuropatia periférica induzida pela quimioterapia, avaliação da dor total e acolhimento humanizado, comunicação terapêutica e conduta ética, autoestima e imagem corporal, e eletroterapia aplicada ao paciente oncológico</span>
+          </div>
+          <div style="background:#f0fdfa;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong style="color:#0f766e;">Dia 2 (26/07 - Domingo)</strong><br>
+            <span style="color:#444;">Recursos estéticos contraindicados em oncologia, cosmetologia aplicada ao paciente oncológico, estética regenerativa, peptídeos/microagulhamento/skinbooster, terapia capilar e manejo da alopecia, aromaterapia, ascite, protocolos integrativos de estética e bem-estar, práticas corporais e técnicas de massagem adaptadas, e desenvolvimento do raciocínio clínico</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <strong>Opcoes de compra:</strong>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+          <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong>Somente Presencial: R$ 2.500</strong> (12x R$258,56)<br>
+            <span style="color:#555;">2 dias presenciais + apostila + certificado + grupo de suporte</span>
+          </div>
+          <div style="background:#0a0a0a;border:2px solid #e8b84b;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong style="color:#e8b84b;">Combo Tubarão: R$ 3.500</strong> <span style="color:#888;text-decoration:line-through;font-size:13px;">de R$4.500</span> <span style="color:#e8b84b;font-size:12px;font-weight:700;">(economiza R$1.000)</span><br>
+            <span style="color:#ccc;">12x R$361,98 · Presencial + Drenagem Oncológica online com acesso imediato + apostila dos dois módulos + dois certificados + grupo de suporte</span>
+          </div>
+          <div style="background:#f0fdfa;border:2px solid #5eead4;border-radius:10px;padding:14px 16px;font-size:14px;">
+            <strong style="color:#0f766e;">Colaborador(a) Unimed Tubarão: 20% OFF</strong><br>
+            <span style="color:#555;">Cupom UNIMED20 — use o link pronto no topo da aba, após confirmação do vínculo funcional</span>
+          </div>
+        </div>
+      </div>
+      <div class="alerta">
+        <span>💡</span>
+        <span><strong>Sempre ofereça o combo primeiro.</strong> A economia de R$1.000 é o argumento mais forte. Quem compra o combo leva a Drenagem Oncológica online com acesso imediato, ou seja, já começa a estudar hoje enquanto o evento presencial não chega.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-tubarao">💬</div>
+      <h2>Scripts de WhatsApp</h2>
+    </div>
+    <div class="secao-body">
+
+      <div class="script-card verde">
+        <div class="script-label">Primeiro contato (lead entrou pela bio do Instagram)</div>
+        <div class="script-text" id="tb-script1">Oi, [nome]! Tudo bem?
+
+Vi que você se inscreveu para saber mais sobre o evento presencial em Tubarão.
+
+São dois dias de imersão em Estética Paliativa com a Vanessa Menezes, nos dias 25 e 26 de julho, no Ibis Tubarão. Teoria e prática juntas, com turma bem reduzida: apenas 20 vagas, e é uma turma exclusiva na cidade.
+
+Quem participar também leva o acesso ao módulo online de Drenagem Oncológica como bônus.
+
+Você é profissional de saúde ou estética?</div>
+        <button class="copy-btn" onclick="copiar(this, 'tb-script1')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card verde">
+        <div class="script-label">Quando confirma o interesse e pede mais detalhes</div>
+        <div class="script-text" id="tb-script2">No primeiro dia a gente mergulha na oncologia, efeitos dos tratamentos, alterações de pele, dor e comunicação com o paciente. No segundo, trabalhamos os protocolos práticos: cosmetologia, terapia capilar, aromaterapia e técnicas de massagem adaptadas.
+
+Você sai do evento sabendo exatamente como atender um paciente em tratamento de câncer com segurança, técnica e humanidade.
+
+Temos duas opcoes:
+
+Somente presencial: R$ 2.500 (ou 12x de R$258,56)
+
+Combo Tubarão: R$ 3.500 (ou 12x de R$361,98) — inclui tudo do presencial mais a formação em Drenagem Oncológica 100% online, com acesso imediato assim que você pagar. Você já começa a estudar hoje e economiza R$1.000 em relação ao valor separado.
+
+Qual faz mais sentido para você?</div>
+        <button class="copy-btn" onclick="copiar(this, 'tb-script2')">Copiar mensagem</button>
+        <div class="script-hint">Apresente sempre as duas opcoes, mas mencione o combo primeiro. A economia de R$1.000 fecha muita venda.</div>
+      </div>
+
+      <div class="script-card verde">
+        <div class="script-label">Quando a pessoa diz que trabalha na Unimed Tubarão</div>
+        <div class="script-text" id="tb-script-unimed">Que ótimo! Esse evento tem apoio oficial da Unimed Tubarão, então colaboradores(as) da instituição têm 20% de desconto exclusivo nesta formação.
+
+Aqui está o link já com o desconto aplicado:
+
+https://pay.kiwify.com.br/zJMEL5a?coupon=UNIMED20
+
+Qualquer dúvida no processo, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'tb-script-unimed')">Copiar mensagem</button>
+        <div class="script-hint">Confirme o vínculo funcional (carteirinha/crachá) antes de enviar o link com o cupom.</div>
+      </div>
+
+      <div class="script-card verde">
+        <div class="script-label">Quando escolhe o combo</div>
+        <div class="script-text" id="tb-script2b">Otima escolha! O combo é o mais completo e você ja sai com dois cursos pelo preco de praticamente um.
+
+Aqui está o link para garantir o Combo Tubarão:
+
+https://pay.kiwify.com.br/zJMEL5a
+
+O acesso à Drenagem Oncológica online chega por e-mail assim que o pagamento for confirmado. Qualquer dúvida, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'tb-script2b')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card verde">
+        <div class="script-label">Quando escolhe somente o presencial</div>
+        <div class="script-text" id="tb-script2c">Perfeito! Aqui está o link para garantir sua vaga:
+
+https://pay.kiwify.com.br/zJMEL5a
+
+Lembrando que são apenas 20 vagas. Qualquer dúvida no processo, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'tb-script2c')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card verde">
+        <div class="script-label">Quando pede o link de pagamento</div>
+        <div class="script-text" id="tb-script3">Aqui está o link para garantir sua vaga:
+
+https://pay.kiwify.com.br/zJMEL5a
+
+Lembrando que são apenas 20 vagas, em uma turma exclusiva em Tubarão. Qualquer dúvida no processo, pode me chamar aqui.</div>
+        <button class="copy-btn" onclick="copiar(this, 'tb-script3')">Copiar mensagem</button>
+      </div>
+
+      <div class="script-card verde">
+        <div class="script-label">Seguimento (lead sumiu após 24h)</div>
+        <div class="script-text" id="tb-script4">Oi, [nome]! Passando para ver se surgiu alguma dúvida sobre o evento de Tubarão.
+
+As vagas estão preenchendo rápido porque é uma turma exclusiva na cidade, com apenas 20 vagas. Se você quiser garantir a sua, é só me falar que te envio o link.
+
+Posso te ajudar com alguma coisa?</div>
+        <button class="copy-btn" onclick="copiar(this, 'tb-script4')">Copiar mensagem</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-tubarao">❓</div>
+      <h2>Perguntas frequentes com respostas prontas</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> Precisa ter experiência prévia?</div>
+        <div class="resposta">Não é obrigatório, mas é um curso voltado para profissionais de saúde e estética. Estudantes de saúde também podem participar. Se tiver dúvida se o perfil se encaixa, me conta sua área e a gente verifica juntos.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> Qual o endereço exato do evento?</div>
+        <div class="resposta">O evento acontece no Ibis Tubarão, na R. Paraguai, 145 - Vila Moema, Tubarão/SC.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> Tem desconto para quem trabalha na Unimed Tubarão?</div>
+        <div class="resposta">Sim! O evento tem apoio oficial da Unimed Tubarão e colaboradores(as) da instituição têm 20% de desconto exclusivo nesta formação. Basta confirmar o vínculo funcional para receber o link com o desconto aplicado.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> Onde posso me hospedar?</div>
+        <div class="resposta">O evento acontece no próprio Ibis Tubarão, e o hotel vai oferecer uma tarifa especial para quem participar da formação. Quem vier de fora pode se hospedar no mesmo local do curso.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> Tem certificado?</div>
+        <div class="resposta">Sim, todos os participantes recebem certificado de conclusão ao final do evento.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> O que é o bônus de Drenagem Oncológica?</div>
+        <div class="resposta">Quem participar do evento recebe acesso ao módulo online de Drenagem Oncológica. É um conteúdo em vídeo com a Vanessa, complementar à formação presencial, que você acessa no seu próprio tempo e fica para sempre.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> Qual a diferenca entre o presencial e o combo?</div>
+        <div class="resposta">O presencial (R$ 2.500) inclui os 2 dias de imersão em Tubarão. O Combo (R$ 3.500) inclui tudo isso mais a formação em Drenagem Oncológica 100% online, com acesso imediato após o pagamento. No combo você economiza R$1.000 em relação a comprar os dois separados.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-faq-verde">P</span> Tem parcelamento?</div>
+        <div class="resposta">Sim. Presencial: 12x de R$258,56. Combo: 12x de R$361,98. As opcoes estão disponíveis na página de inscrição.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OBJECOES -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-tubarao">🛡️</div>
+      <h2>Objeções e como responder</h2>
+    </div>
+    <div class="secao-body" style="gap:0;">
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-verde">!</span> "Não posso viajar" / "Sou de outra cidade"</div>
+        <div class="resposta">Entendo! Muita gente vem de outras cidades exatamente para fazer essa formação com a Vanessa. O evento já acontece dentro do Ibis Tubarão, então quem vier de fora pode se hospedar no mesmo local do curso, com tarifa especial para participantes. É só organizar uma viagem de fim de semana. Posso te ajudar a pensar na logística?</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-verde">!</span> "Tá caro"</div>
+        <div class="resposta">Entendo. Pensa que além dos dois dias de formação presencial você leva junto o bônus do módulo online de Drenagem Oncológica, que sozinho tem um valor significativo. E se você for colaborador(a) da Unimed Tubarão, ainda tem 20% de desconto. É um investimento que abre um novo nicho de atendimento para a sua carreira.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-verde">!</span> "Vou pensar"</div>
+        <div class="resposta">Claro! Só fica atenta porque são apenas 20 vagas nessa turma exclusiva em Tubarão. Se fechar antes de você decidir, não sabemos quando vai ter uma próxima turma na cidade. Qualquer dúvida que aparecer, pode me chamar aqui.</div>
+      </div>
+
+      <div class="item-qa">
+        <div class="pergunta"><span class="q-ico q-obj-verde">!</span> "Não trabalho com oncológico"</div>
+        <div class="resposta">Ainda! Mas essa é justamente uma das melhores justificativas para fazer a formação: sair preparada antes de precisar. Pacientes oncológicos cada vez mais buscam profissionais de estética como parte do autocuidado durante o tratamento. Você vai estar pronta quando esse momento chegar.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHECKLIST FECHAMENTO -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="ico ico-tubarao">✅</div>
+      <h2>Roteiro de fechamento</h2>
+    </div>
+    <div class="secao-body">
+      <div class="check-list">
+        <div class="check-item"><span class="num num-verde">1</span><span>Confirme a área de atuação da pessoa</span></div>
+        <div class="check-item"><span class="num num-verde">2</span><span>Apresente o evento: 2 dias presenciais, 20 vagas, turma exclusiva em Tubarão, no Ibis Tubarão</span></div>
+        <div class="check-item"><span class="num num-verde">3</span><span>Descreva brevemente a programação dos dois dias</span></div>
+        <div class="check-item"><span class="num num-verde">4</span><span>Pergunte se a pessoa é colaborador(a) da Unimed Tubarão (20% de desconto, mediante confirmação de vínculo)</span></div>
+        <div class="check-item"><span class="num num-verde">5</span><span>Apresente as duas opcoes: Somente Presencial R$2.500 e Combo R$3.500 (economiza R$1.000)</span></div>
+        <div class="check-item"><span class="num num-verde">6</span><span>Destaque o combo: acesso imediato à Drenagem Online + dois certificados + maior custo-benefício</span></div>
+        <div class="check-item"><span class="num num-verde">7</span><span>Reforce a escassez: "apenas 20 vagas, turma exclusiva na cidade"</span></div>
+        <div class="check-item"><span class="num num-verde">8</span><span>Envie o link correto conforme a escolha da pessoa</span></div>
+        <div class="check-item"><span class="num num-verde">9</span><span>Se não responder em 24h, use o script de seguimento com o gatilho de escassez</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 <script>
 function showTab(id, btn, activeClass) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-headspa','active-drenagem','active-cascavel'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-headspa','active-drenagem','active-cascavel','active-tubarao'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add(activeClass);
 }
